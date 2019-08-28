@@ -211,7 +211,9 @@
                                                         <div class="col-md-9">
                                                             <div class="input-icon right">
                                                                 <i class="fa fa-user"></i>
-                                                                <input id="inputName" type="text" placeholder="Judul" class="form-control" name="judul" /></div>
+
+                                                                <input id="inputName" type="text" value="{{$master->judul}}" class="form-control" name="judul" /></div>
+
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
@@ -220,7 +222,9 @@
                                                         <div class="col-md-9">
                                                             <div class="input-icon right">
                                                                 <i class="fa fa-lock"></i>
-                                                                <input id="inputPassword" type="text" placeholder="deskripsi" class="form-control" name="deskripsi" /></div>
+
+                                                                <input id="inputPassword" type="text" value="{{$master->deskripsi}}" class="form-control" name="deskripsi" /></div>
+
                                                         </div>
                                                     </div>
                                                      <div class="form-group">

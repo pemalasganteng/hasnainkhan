@@ -1,18 +1,28 @@
 <div class="span3">
                         <div class="sidebar">
                             <ul class="widget widget-menu unstyled">
+
                                 <li class="active"><a href="/admin"><i class="menu-icon icon-dashboard"></i>Dashboard
+
                                 </a></li>
                                 <li><a class="collapsed" data-toggle="collapse" href="#togglePages"><i class="menu-icon icon-cog">
                                 </i><i class="icon-chevron-down pull-right"></i><i class="icon-chevron-up pull-right">
                                 </i>Halaman Depan </a>
                                     <ul id="togglePages" class="collapse unstyled">
+
+                                        <li><a href="/admin/halaman-depan/slidebar"><i class="icon-inbox"></i>Slidebar </a></li>
+                                        <li><a href="/admin/halaman-depan/kata-sambutan"><i class="icon-inbox"></i>Kata Sambutan </a></li>
+                                        <li><a href="/admin/halaman-depan/keunggulan"><i class="icon-inbox"></i>Keunggulan </a></li>
+                                        <li><a href="/admin/halaman-depan/kepala"><i class="icon-inbox"></i>Kepala Sekolah </a></li>
+                                        <li><a href="/admin/gallery"><i class="icon-inbox"></i>Gallery </a></li>
+
                                          <li><a href="/admin/berita/add"><i class="icon-inbox"></i>Berita </a></li>
                                          <li><a href="/admin/berita/controller"><i class="icon-inbox"></i>Kontrol Berita</a></li>
                                         <li><a href="/admin/halaman-depan/slidebar"><i class="icon-inbox"></i>Slidebar </a></li>
                                         <li><a href="other-user-profile.html"><i class="icon-inbox"></i>Profile </a></li>
                                         <li><a href="other-user-listing.html"><i class="icon-inbox"></i>All Users </a></li>
                                         <li><a href="/admin/galeri/add"><i class="icon-inbox"></i>Galeri Foto </a></li>
+
                                     </ul>
                                 </li>
                                 <li><a href="activity.html"><i class="menu-icon icon-bullhorn"></i>News Feed </a>

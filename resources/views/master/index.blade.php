@@ -47,18 +47,24 @@
           <div class="container">
             <div class="row">
               <div class="col-sm-6 col-sm-offset-3">
-                <h2 class="module-title font-alt">Our Services</h2>
-                <div class="module-subtitle font-serif">A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy with my whole heart.</div>
+
+                <h2 class="module-title font-alt">{{$master->judul}}</h2>
+                <div class="module-subtitle font-serif">{{$master->deskripsi}}</div>
               </div>
             </div>
             <div class="row multi-columns-row">
+
+
               
-              @foreach($keunggulan as $keunggulan)
+              @foreach($keunggulan as $keunggulans )
+                  @continue($keunggulans->id == 1)
+                  
               <div class="col-md-3 col-sm-6 col-xs-12">
                 <div class="features-item">
-                  <div class="features-icon"><span class="{{$keunggulan->icon}}"></span></div>
-                  <h3 class="features-title font-alt">{{$keunggulan->subjudul}}</h3>
-                  <p>{{$keunggulan->isi}}</p>
+                  <div class="features-icon"><span class="{{$keunggulans->icon}}"></span></div>
+                  <h3 class="features-title font-alt">{{$keunggulans->subjudul}}</h3>
+                  <p>{{$keunggulans->isi}}</p>
+
                 </div>
               </div>
               @endforeach
@@ -158,50 +164,24 @@
           <div class="container">
             <div class="row">
               <div class="col-sm-6 col-sm-offset-3">
-                <h2 class="module-title font-alt">Our features</h2>
-                <div class="module-subtitle font-serif">A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy with my whole heart.</div>
+
+                <h2 class="module-title font-alt">{{$kepala->judul}}</h2>
+                <div class="module-subtitle font-serif">{{$kepala->isi}}</div>
+
               </div>
             </div>
             <div class="row">
               <div class="col-sm-6 col-md-3 col-lg-3">
-                <div class="alt-features-item">
-                  <div class="alt-features-icon"><span class="icon-strategy"></span></div>
-                  <h3 class="alt-features-title font-alt">Branding</h3>A wonderful serenity has taken possession of my entire soul like these sweet mornings.
-                </div>
-                <div class="alt-features-item">
-                  <div class="alt-features-icon"><span class="icon-tools-2"></span></div>
-                  <h3 class="alt-features-title font-alt">Development</h3>A wonderful serenity has taken possession of my entire soul like these sweet mornings.
-                </div>
-                <div class="alt-features-item">
-                  <div class="alt-features-icon"><span class="icon-target"></span></div>
-                  <h3 class="alt-features-title font-alt">Marketing</h3>A wonderful serenity has taken possession of my entire soul like these sweet mornings.
-                </div>
-                <div class="alt-features-item">
-                  <div class="alt-features-icon"><span class="icon-tools"></span></div>
-                  <h3 class="alt-features-title font-alt">Design</h3>A wonderful serenity has taken possession of my entire soul like these sweet mornings.
-                </div>
+
               </div>
+                
               <div class="col-md-6 col-lg-6 hidden-xs hidden-sm">
-                <div class="alt-services-image align-center"><img src="assets/images/promo.png" alt="Feature Image"></div>
+                <div class="alt-services-image align-center"><img src="{{url('gambar/kepala_sekolah/'.$kepala->gambar)}}" alt="Feature Image"></div>
               </div>
               <div class="col-sm-6 col-md-3 col-lg-3">
-                <div class="alt-features-item">
-                  <div class="alt-features-icon"><span class="icon-camera"></span></div>
-                  <h3 class="alt-features-title font-alt">Photography</h3>A wonderful serenity has taken possession of my entire soul like these sweet mornings.
-                </div>
-                <div class="alt-features-item">
-                  <div class="alt-features-icon"><span class="icon-mobile"></span></div>
-                  <h3 class="alt-features-title font-alt">Mobile</h3>A wonderful serenity has taken possession of my entire soul like these sweet mornings.
-                </div>
-                <div class="alt-features-item">
-                  <div class="alt-features-icon"><span class="icon-linegraph"></span></div>
-                  <h3 class="alt-features-title font-alt">Music</h3>A wonderful serenity has taken possession of my entire soul like these sweet mornings.
-                </div>
-                <div class="alt-features-item">
-                  <div class="alt-features-icon"><span class="icon-basket"></span></div>
-                  <h3 class="alt-features-title font-alt">Shop</h3>A wonderful serenity has taken possession of my entire soul like these sweet mornings.
-                </div>
               </div>
+
+
             </div>
           </div>
         </section>
