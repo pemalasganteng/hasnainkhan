@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\UploadedFile;
+
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 use Intervention\Image\ImageManagerStatic as Image;
@@ -15,10 +16,167 @@ use App\kepala;
 use App\gallery;
 use App\album;
 use File;
+use App\kategori;
+use App\berita;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Input;
 
 class AdminController extends Controller
 {
+    public function berita_add(){
+        $kategori = kategori::all();
+        return view ('admin/beritaadd',['kategori' => $kategori]);
+    }
+    public function berita_store(Request $request){
+        $validator = Validator::make($request->all(), [
+            'judul' => 'required',
+            'cover' => 'required',
+            'isi' => 'required',
+            'id_kategori' => 'required'
+            ]);
+        if ($validator->fails()) {
+            return redirect()->back()->with('gagal','gagal post berita!');
+        }
+        else {
+            $uploadfile = $request->file('cover');
+            $name = time().'.'.$uploadfile->getClientOriginalName();
+            $path = $uploadfile->move('wysiwyg',$name);
+            $berita = new berita;
+            $berita->cover = $name;
+            $berita->judul = $request->judul;
+            $berita->isi = $request->isi;
+            $berita->id_kategori = $request->id_kategori;
+            $berita->tanggal = now();
+            $berita->save();
+            return redirect()->back()->with('sukses','sukses post berita!');
+        }
+        
+    }
+    public function berita_controller(){
+    //     $berita = berita::orderBy('id_berita', 'DESC')->get();
+    return view ('admin/beritacontrol');
+    }
+    public function berita_del(Request $request){
+        // $del = berita::find($id);
+        // $del->forceDelete();
+        // return redirect()->back()->with('sukses','Berhasil menghapus data!');
+
+        if($request->ajax())
+        {
+            DB::table('berita')
+                ->where('id_berita', $request->id)
+                ->delete();
+            echo '<div class="alert alert-success">Data Deleted</div>';
+        }
     
+
+    }
+    public function berita_edit(Request $request,$id){
+        $edit = berita::find($id);
+        $kategori = kategori::all();  
+        $idkat = $edit->id_kategori;
+        $b = DB::table('berita')
+        ->join('kategori', 'berita.id_kategori', '=', 'kategori.id_kategori')
+        ->where('kategori.id_kategori', '=', $idkat)
+        ->select('*')
+        ->get();
+        return view('admin/beritaedit', ['edit' => $edit, 'b' => $b, 'kategori' => $kategori]);
+    }
+    public function berita_update(Request $request){
+        if($request->cover == NULL){
+            $id = $request->id_berita;
+            $berita = berita::find($id);
+            $berita->judul = $request->judul;
+            $berita->cover = $request->p;
+            $berita->isi = $request->isi;
+            $berita->id_kategori = $request->id_kategori;
+            $berita->save();
+        return redirect()->back()->with('sukses','sukses edit!');
+        } else {    
+        $uploadfile = $request->file('cover');
+        $name = time().'.'.$uploadfile->getClientOriginalName();
+        $path = $uploadfile->move('wysiwyg',$name);    
+        $id = $request->id_berita;
+        $berita = berita::find($id);
+        $berita->judul = $request->judul;
+        $berita->cover = $name;
+        $berita->isi = $request->isi;
+        $berita->id_kategori = $request->id_kategori;
+        $berita->save();
+        return redirect()->back()->with('sukses','sukses edit!');
+        }
+       
+
+    }
+    public function berita_search(Request $request){
+    //     if($request->ajax()){
+    //         $output="";
+    //         $berita=DB::table('berita')->where('judul','LIKE','%'.$request->search."%")->get();
+    //         if($berita){
+    //             foreach ($berita as $key => $products) {
+    //             $output.='<tr>'.
+    //             '<td>'.$loop->iteration.'</td>'.
+    //             '<td>'.$products->judul.'</td>'.
+    //             '<td>'.$products->tanggal.'</td>'.
+    //             '<td><a href="/admin/berita/edit/{{$row->id_berita}}"><input type="button" class="btn btn-primary" Value="Edit" name=""></a> <a href="/admin/berita/del/{{$row->id_berita}}"><input type="button" class="btn btn-danger" Value="Delete" onclick="return confirm());" name=""></a></td>'.
+    //             '</tr>';
+    //         }
+    //         return Response($output);
+    //         }
+    //     }
+    // }
+       
+        if ($request->ajax()) {
+            $output = '';
+            $query = $request->get('query');
+            if($query != '')
+            {
+                $data = DB::table('berita')
+                ->where('judul', 'like', '%'.$query.'%')
+                ->orderBy('id_berita', 'desc')
+                ->get();
+            }
+            else {
+                $data = DB::table('berita')
+                ->orderBy('id_berita', 'desc')
+                ->get();
+            }
+            $total_row=$data->count();
+            if($total_row > 0){
+                $i=1;
+                foreach ($data as $row) {
+                  
+                   $output .= '<tr>
+                    <td>'.$i++.'</td>
+                    <td>'.$row->judul.'</td>
+                    <td>'.$row->tanggal.'</td>
+                    <td><a href="/admin/berita/edit/'.$row->id_berita.'"><input type="button" class="btn btn-primary" Value="Edit" name=""></a> <button type="button" class="btn btn-danger delete"  id="'.$row->id_berita.'">Delete</button></td>
+                    </tr>
+                   ';
+                }
+            }
+            else {
+                $output = '
+                <tr>
+                    <td align="center">No Data Found</td>
+                </tr>
+                ';
+            }
+            $data = array(
+                'table_data' => $output,
+                'total_data' => $total_row
+
+            );
+            echo json_encode($data);
+        }
+    
+    }
+    public  function    ppdb(){
+
+
+        return  view    ('master/ppdb');
+    }
+
 
     public  function    coba(){
 
@@ -39,9 +197,11 @@ class AdminController extends Controller
 
     public function slidebar()
     {
+
     	$slider = slider::all();
 
     	return view('admin/slidebar',['slider' => $slider]); 
+
     
     }
 
@@ -120,6 +280,7 @@ class AdminController extends Controller
 
     	$edit = slider::find($id);
 
+
         return view('admin/slidebar',['slider' => $slider, 'katadepan' => $katadepan]); 
     }
 
@@ -128,6 +289,7 @@ class AdminController extends Controller
         $katadepan = katadepan::find(3);
 
         return view('admin/katasambutan',['katadepan' => $katadepan]);
+
     }
 
 
@@ -144,12 +306,15 @@ class AdminController extends Controller
 
         	$kata->judul = $request->judul;
         	    
+
             $kata->isi = $request->keterangan;
+
 			
            			$kata->save();
            			return redirect()->back()->with('success','sukses!');
              
     }
+
 
     public function keunggulan()
     {
@@ -171,6 +336,7 @@ class AdminController extends Controller
     		
     		]);
 
+
         $master = keunggulan::find(1);
 
             $master->judul = $request->judul;
@@ -184,11 +350,13 @@ class AdminController extends Controller
         	$unggul->icon = $request->icon;
 		
         $master->save();	
+
         $unggul->save();
 
            			return redirect()->back()->with('success','sukses!');
              
     }
+
 
     public function kepala()
     {
@@ -453,19 +621,23 @@ class AdminController extends Controller
             {
                 $name=$image->getClientOriginalName();
                 $image->move(public_path().'/images/', $name);  
+
                 $data[] = $name;  
             }
          }
+
 
          $form= new gallery();
          $form->judul = $request->judul;
          $form->deskripsi = $request->deskripsi;
          $form->image=json_encode($data);
+
          
         
         $form->save();
 
         return back()->with('success', 'Your images has been successfully');
+
 
 
 
@@ -556,6 +728,28 @@ class AdminController extends Controller
         }
                     return redirect()->back()->with('success','sukses!');
              
+    }
+
+
+    }
+    public function berita_upimage(Request $request){
+        $CKEditor = $request->input('CKEditor');
+        $funcNum  = $request->input('CKEditorFuncNum');
+        $message  = $url = '';
+            if (Input::hasFile('upload')) {
+                $file = Input::file('upload');
+                if ($file->isValid()) {
+                    $filename =rand(1000,9999).$file->getClientOriginalName();
+                    $file->move(public_path().'/wysiwyg/', $filename);
+                    $url = url('wysiwyg/' . $filename);
+        } else {
+            $message = 'An error occurred while uploading the file.';
+        }
+    } 
+    else {
+        $message = 'No file uploaded.';
+    }
+    return '<script>window.parent.CKEDITOR.tools.callFunction('.$funcNum.', "'.$url.'", "'.$message.'")</script>';    
     }
 
 

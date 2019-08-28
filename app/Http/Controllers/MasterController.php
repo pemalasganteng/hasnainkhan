@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\DB;
 use App\slider;
 use App\katadepan;
@@ -10,6 +11,12 @@ use App\keunggulan;
 use App\kepala;
 use App\gallery;
 use App\album;
+
+use App\slider;
+use App\katadepan;
+use App\keunggulan;
+use App\galeri;
+
 
 
 class MasterController extends Controller
@@ -21,9 +28,11 @@ class MasterController extends Controller
         $slider = slider::all();
         $katadepan = katadepan::all();
         $keunggulan = keunggulan::all();
+
         $master = keunggulan::find(1);
         $kepala = kepala::find(3);
     	return view('master/index',['slider' => $slider, 'katadepan' => $katadepan, 'keunggulan' => $keunggulan, 'master' => $master, 'kepala' => $kepala  ]); 
+
     
     }
 
@@ -50,6 +59,7 @@ class MasterController extends Controller
     	return view('master/multimedia'); 
     
     }
+
 
     public function gallery()
     {   
@@ -87,6 +97,7 @@ class MasterController extends Controller
         return view('master/mgallery2',compact('users','tes','p','cok')); 
     
     }
+
 
 
 

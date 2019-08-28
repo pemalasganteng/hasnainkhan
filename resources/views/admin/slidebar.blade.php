@@ -44,6 +44,7 @@
 
                                         <div class="control-group">
                                             <div class="controls">
+
                                                 <button type="submit" class="btn btn-mini btn-primary">Tambahkan</button>
                                             </div>
                                         </div>
@@ -80,6 +81,14 @@
                         </div>
                        
 
+
+
+                                                <button type="submit" class="btn">Submit Form</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                            </div>
+                        </div>
 
 
                         

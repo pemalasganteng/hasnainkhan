@@ -47,6 +47,7 @@
           <div class="container">
             <div class="row">
               <div class="col-sm-6 col-sm-offset-3">
+
                 <h2 class="module-title font-alt">{{$master->judul}}</h2>
                 <div class="module-subtitle font-serif">{{$master->deskripsi}}</div>
               </div>
@@ -63,6 +64,7 @@
                   <div class="features-icon"><span class="{{$keunggulans->icon}}"></span></div>
                   <h3 class="features-title font-alt">{{$keunggulans->subjudul}}</h3>
                   <p>{{$keunggulans->isi}}</p>
+
                 </div>
               </div>
               @endforeach
@@ -162,12 +164,15 @@
           <div class="container">
             <div class="row">
               <div class="col-sm-6 col-sm-offset-3">
+
                 <h2 class="module-title font-alt">{{$kepala->judul}}</h2>
                 <div class="module-subtitle font-serif">{{$kepala->isi}}</div>
+
               </div>
             </div>
             <div class="row">
               <div class="col-sm-6 col-md-3 col-lg-3">
+
               </div>
                 
               <div class="col-md-6 col-lg-6 hidden-xs hidden-sm">
@@ -175,6 +180,7 @@
               </div>
               <div class="col-sm-6 col-md-3 col-lg-3">
               </div>
+
 
             </div>
           </div>
