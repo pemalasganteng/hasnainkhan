@@ -18,8 +18,7 @@ use App\album;
 use File;
 use App\kategori;
 use App\berita;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Input;
+
 
 class AdminController extends Controller
 {
@@ -286,7 +285,7 @@ class AdminController extends Controller
 
     public function katasambutan(){
 
-        $katadepan = katadepan::find(3);
+        $katadepan = katadepan::find(1);
 
         return view('admin/katasambutan',['katadepan' => $katadepan]);
 
@@ -731,7 +730,7 @@ class AdminController extends Controller
     }
 
 
-    }
+
     public function berita_upimage(Request $request){
         $CKEditor = $request->input('CKEditor');
         $funcNum  = $request->input('CKEditorFuncNum');
