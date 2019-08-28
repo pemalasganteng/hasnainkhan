@@ -12,9 +12,6 @@ use App\kepala;
 use App\gallery;
 use App\album;
 
-use App\slider;
-use App\katadepan;
-use App\keunggulan;
 use App\galeri;
 
 
@@ -30,7 +27,7 @@ class MasterController extends Controller
         $keunggulan = keunggulan::all();
 
         $master = keunggulan::find(1);
-        $kepala = kepala::find(3);
+        $kepala = kepala::find(1);
     	return view('master/index',['slider' => $slider, 'katadepan' => $katadepan, 'keunggulan' => $keunggulan, 'master' => $master, 'kepala' => $kepala  ]); 
 
     
