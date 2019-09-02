@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\UploadedFile;
-
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 use Intervention\Image\ImageManagerStatic as Image;
@@ -18,6 +17,8 @@ use App\album;
 use File;
 use App\kategori;
 use App\berita;
+use App\alumni;
+use App\jurusan;
 
 
 class AdminController extends Controller
@@ -34,6 +35,11 @@ class AdminController extends Controller
     public function berita_add(){
         $kategori = kategori::all();
         return view ('admin/beritaadd',['kategori' => $kategori]);
+    }
+
+    public function berita_add2(){
+        $kategori = kategori::all();
+        return view ('admin2/berita',['kategori' => $kategori]);
     }
     public function berita_store(Request $request){
         $validator = Validator::make($request->all(), [
@@ -63,6 +69,10 @@ class AdminController extends Controller
     public function berita_controller(){
     //     $berita = berita::orderBy('id_berita', 'DESC')->get();
     return view ('admin/beritacontrol');
+    }
+    public function berita_controller2(){
+    //     $berita = berita::orderBy('id_berita', 'DESC')->get();
+    return view ('admin2/databerita');
     }
     public function berita_del(Request $request){
         // $del = berita::find($id);
@@ -189,7 +199,7 @@ class AdminController extends Controller
     public  function    coba(){
 
 
-        return  view    ('admin/index');
+        return  view    ('admin2/index');
     }
 
 
@@ -208,7 +218,17 @@ class AdminController extends Controller
 
     	$slider = slider::all();
 
-    	return view('admin/slidebar',['slider' => $slider]); 
+    	return view('admin2/slidebar',['slider' => $slider]); 
+
+    
+    }
+
+    public function slidebar2()
+    {
+
+        $slider = slider::all();
+
+        return view('admin2/dataslide',['slider' => $slider]); 
 
     
     }
@@ -247,6 +267,8 @@ class AdminController extends Controller
            
             $slider->gambar = $name;
 			$slider->deskripsi = $request->keterangan;
+
+           dd($slider);
             
 
 			$slider->save();
@@ -294,9 +316,9 @@ class AdminController extends Controller
 
     public function katasambutan(){
 
-        $katadepan = katadepan::find(1);
+        $katadepan = katadepan::find(3);
 
-        return view('admin/katasambutan',['katadepan' => $katadepan]);
+        return view('admin2/katasambutan',['katadepan' => $katadepan]);
 
     }
 
@@ -315,12 +337,52 @@ class AdminController extends Controller
         	$kata->judul = $request->judul;
         	    
 
-            $kata->isi = $request->keterangan;
+            $kata->isi = $request->isi;
 
 			
            			$kata->save();
            			return redirect()->back()->with('success','sukses!');
              
+    }
+
+    public function alumni(){
+
+        return view ('admin2/alumni');
+    }
+    public function alumni2(){
+        $alumni = alumni::all();
+        return view ('admin2/dataalumni',compact('alumni'));
+    }
+
+    public function alumni_proses(Request $request){
+        $uploadedFile = $request->file('file');
+
+        $name = time().'.'.$uploadedFile->getClientOriginalName();
+
+        $path = $uploadedFile->move('gambar/alumni',$name);
+
+        $alumni = new alumni;
+
+        $alumni->nama = $request->nama;
+        $alumni->tahun = $request->tahun;
+        $alumni->pesan =$request->pesan;
+        $alumni->file = $name;
+
+        $alumni->save();
+
+
+        return redirect()->back();
+    }
+
+    public function alumni_del(Request $request,$id){
+
+        $hapus = alumni::find($id);
+
+        $path = public_path()."/gambar/alumni/".$hapus->file;
+        unlink($path);
+        $hapus -> forceDelete();
+
+        return redirect()->back();
     }
 
 
@@ -330,7 +392,17 @@ class AdminController extends Controller
         $unggul = keunggulan::select('subjudul','isi','icon');
         $ungguls = keunggulan::all();
 
-        return view('admin/keunggulan',['master' => $master , 'unggul' => $unggul, 'ungguls' => $ungguls]); 
+        return view('admin2/keunggulan',['master' => $master , 'unggul' => $unggul, 'ungguls' => $ungguls]); 
+    
+    }
+
+    public function keunggulan2()
+    {
+        $master = keunggulan::find(1);
+        $unggul = keunggulan::select('subjudul','isi','icon');
+        $ungguls = keunggulan::all();
+
+        return view('admin2/datakeunggulan',['master' => $master , 'unggul' => $unggul, 'ungguls' => $ungguls]); 
     
     }
 
@@ -486,6 +558,29 @@ class AdminController extends Controller
         return  view('admin/gallery',compact('users','album','asu','cokk','cok','k'));
 
     }
+    public function gallery_datafoto(){
+
+          $cok = album::all();
+        foreach ($cok as $cokk){
+          for($i=0; $i<count($cok); $i++)
+        $k = $cokk->id;
+         }
+        $asu = db::table('galleries')->join('album', 'galleries.id_album', '=', 'album.id')->select('galleries.*', 'galleries.image')->get();
+
+  
+        
+        $users = db::table('album')->join('galleries', 'album.id', '=', 'galleries.id_album')->select('album.*', 'galleries.id_album' , 'galleries.image')->get();
+        
+        
+        $album =album::all();
+
+         return  view('admin2/datagallery_f',compact('users','album','asu','cokk','cok','k'));
+     
+    }
+    public function gallery_foto(){
+
+        return view('admin2/gallery_f');
+    }
 
     public function gallery_edit( $id){
 
@@ -494,6 +589,15 @@ class AdminController extends Controller
         $tes = album::where('id' ,'=' ,$id)->get();
 
        return view('admin/galleryedit',compact('users','p','tes'));
+    }
+
+    public function gallery_edit2( $id){
+
+        $users =album::find($id);     
+        $p = gallery::where('id_album' ,'=' ,$id)->get();
+        $tes = album::where('id' ,'=' ,$id)->get();
+
+       return view('admin2/galleryedit_f',compact('users','p','tes'));
     }
 
     public function gallery_del2(Request $request,$id){
@@ -755,5 +859,33 @@ class AdminController extends Controller
     return '<script>window.parent.CKEDITOR.tools.callFunction('.$funcNum.', "'.$url.'", "'.$message.'")</script>';    
     }
 
+public function jurusan(){
+
+
+    return view('admin2/jurusan');
+}
+
+public function jurusan_up(Request $request){
+
+    $validator = Validator::make($request->all(), [
+            'jurusan' => 'required'
+           
+            ]);
+        if ($validator->fails()) {
+            return redirect()->back()->with('gagal','gagal menambhkan jurusan!');
+        }
+        else {
+            
+            $jurusan= new jurusan;
+
+            $jurusan->jurusan = $request->jurusan;
+
+            $jurusan->save();
+
+            return redirect()->back()->with('sukses','menambhkan jurusan!');
+        }
+
+
+}
 
 }
