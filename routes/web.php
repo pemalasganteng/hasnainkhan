@@ -23,9 +23,12 @@ Route::get('/alumni', 'MasterController@alumni');
 Route::get('/gallery', 'MasterController@gallery');
 Route::get('/gallery/{id_album}', 'MasterController@gallery2');
 
+Route::get('/berita', 'MasterController@berita');
 
 
 
+
+Auth::routes();
 
 
 /*admin*/
@@ -68,8 +71,6 @@ Route::get('/admin/data-alumni', 'AdminController@alumni2');
 Route::post('/admin/alumni/proses', 'AdminController@alumni_proses')->name('up_alumni');
 Route::get('/admin/alumni/del/{id}', 'AdminController@alumni_del')->name('del_alumni');
 
-
-
 Route::get('/ppdb', 'AdminController@ppdb');
 Route::get('/admin/berita', 'AdminController@berita_add2')->name('berita_add');
 Route::get('/admin/data-berita', 'AdminController@berita_controller2')->name('berita_add');
@@ -84,3 +85,6 @@ Route::get('/admin/berita/search', 'AdminController@berita_search')->name('berit
 
 //cke
 Route::post('upload_image','AdminController@berita_upimage')->name('berita_upimage');
+
+
+Route::get('/home', 'HomeController@index')->name('home');
