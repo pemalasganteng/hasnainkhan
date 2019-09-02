@@ -11,7 +11,7 @@ use App\keunggulan;
 use App\kepala;
 use App\gallery;
 use App\album;
-
+use App\berita;
 use App\galeri;
 
 
@@ -94,7 +94,10 @@ class MasterController extends Controller
         return view('master/mgallery2',compact('users','tes','p','cok')); 
     
     }
-
+    public function berita(){
+        $berita = berita::orderBy('id_berita','desc')->get();
+        return view('master/berita', ['berita' => $berita]);
+    }
 
 
 

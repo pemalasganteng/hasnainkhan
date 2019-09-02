@@ -22,6 +22,15 @@ use App\berita;
 
 class AdminController extends Controller
 {
+         protected $gallery,$album  ;
+      public function __construct(gallery $gallery, album $album)
+    {
+        $this->middleware('auth');
+         $this->gallery = $gallery;
+        $this->album   = $album ;
+    }
+
+
     public function berita_add(){
         $kategori = kategori::all();
         return view ('admin/beritaadd',['kategori' => $kategori]);
@@ -86,7 +95,7 @@ class AdminController extends Controller
             $id = $request->id_berita;
             $berita = berita::find($id);
             $berita->judul = $request->judul;
-            $berita->cover = $request->p;
+            $berita->cover = $berita->cover;
             $berita->isi = $request->isi;
             $berita->id_kategori = $request->id_kategori;
             $berita->save();
@@ -433,7 +442,7 @@ class AdminController extends Controller
 
          
 
-            $kepala= kepala::find(3);
+            $kepala= kepala::find(1);
 
             $kepala->judul = $request->judul;
             
@@ -535,14 +544,9 @@ class AdminController extends Controller
          return back();
     }
 
-     protected $gallery,$album  ;
+    
 
-     public function __construct(
-        gallery $gallery, album $album   )
-    {
-        $this->gallery = $gallery;
-        $this->album   = $album ;
-    }
+     
 
 
 
@@ -664,8 +668,8 @@ class AdminController extends Controller
                 $newAlbum->judul     = $request->judul;
                 $newAlbum->deskripsi = $request->deskripsi;
                 $newAlbum->cover     = $name;
+                dd($newAlbum);
                 $newAlbum   ->save  ();
-
                 $id = $newAlbum->id;
 
                

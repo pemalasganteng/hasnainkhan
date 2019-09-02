@@ -19,9 +19,12 @@ Route::get('/jurusan/multimedia', 'MasterController@multimedia');
 Route::get('/gallery', 'MasterController@gallery');
 Route::get('/gallery/{id_album}', 'MasterController@gallery2');
 
+Route::get('/berita', 'MasterController@berita');
 
 
 
+
+Auth::routes();
 
 
 /*admin*/
@@ -52,8 +55,6 @@ Route::post('/admin/gallery/proses', 'AdminController@gallery_up')->name('up_gal
 
 
 
-
-
 Route::get('/ppdb', 'AdminController@ppdb');
 
 Route::get('/admin/berita/add', 'AdminController@berita_add')->name('berita_add');
@@ -66,3 +67,6 @@ Route::get('/admin/berita/search', 'AdminController@berita_search')->name('berit
 
 //cke
 Route::post('upload_image','AdminController@berita_upimage')->name('berita_upimage');
+
+
+Route::get('/home', 'HomeController@index')->name('home');
