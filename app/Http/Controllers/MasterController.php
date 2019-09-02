@@ -11,7 +11,7 @@ use App\keunggulan;
 use App\kepala;
 use App\gallery;
 use App\album;
-
+use App\alumni;
 use App\galeri;
 
 
@@ -27,7 +27,7 @@ class MasterController extends Controller
         $keunggulan = keunggulan::all();
 
         $master = keunggulan::find(1);
-        $kepala = kepala::find(1);
+        $kepala = kepala::find(3);
     	return view('master/index',['slider' => $slider, 'katadepan' => $katadepan, 'keunggulan' => $keunggulan, 'master' => $master, 'kepala' => $kepala  ]); 
 
     
@@ -55,6 +55,12 @@ class MasterController extends Controller
 
     	return view('master/multimedia'); 
     
+    }
+
+    public function alumni(){
+
+        $alumni = alumni::all();
+        return view('master/alumni',compact('alumni'));
     }
 
 

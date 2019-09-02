@@ -22,7 +22,7 @@
                                         <div class="control-group">
                                             <label class="control-label" for="basicinput">Judul</label>
                                             <div class="controls">
-                                                <input type="text" name="judul"  id="basicinput" value="{{$katadepan->judul}}" class="span8">
+                                                <input type="text" name="judul"  id="basicinput" value="{{$katadepan->judul}}" placeholder="{{$katadepan->judul}}" class="span8">
                                                 <span class="help-inline">Minimum 5 Characters</span>
                                             </div>
                                         </div>

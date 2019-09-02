@@ -9,7 +9,7 @@
           <ul class="slides">
            @foreach ($slider as $slider)
             <li class="bg-dark-30 bg-dark" style="background-image:url({{url('gambar/slider/'.$slider->gambar)}});">
-              <div class="titan-caption">
+              <div class="titan-caption">  
                 <div class="caption-content">
                   <div class="font-alt mb-30 titan-title-size-1">{{$slider->judul}}</div>
                   <div class="font-alt mb-40 titan-title-size-4">{{$slider->deskripsi}}</div><a class="section-scroll btn btn-border-w btn-round" href="#about">INFO</a>
@@ -38,6 +38,47 @@
             <div class="row">
               <div class="col-sm-2 col-sm-offset-5">
                 <div class="large-text align-center"><a class="section-scroll" href="#services"><i class="fa fa-angle-down"></i></a></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="module bg-dark-60" data-background="({{url('master/assets/images/services_bg.jpg')}}" >
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-6 col-sm-offset-3">
+                <h2 class="module-title font-alt">SMKI ULUL ALBAB DALAM ANGKA</h2>
+                <div class="module-subtitle font-serif"></div>
+              </div>
+            </div>
+            <div class="row multi-columns-row">
+              <div class="col-sm-6 col-md-3 col-lg-3">
+                <div class="count-item mb-sm-40">
+                  <div class="count-icon"><span class="icon-wallet"></span></div>
+                  <h3 class="count-to font-alt" data-countto="6543"></h3>
+                  <h5 class="count-title font-serif">Siswa Baru</h5>
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-3 col-lg-3">
+                <div class="count-item mb-sm-40">
+                  <div class="count-icon"><span class="icon-wine"></span></div>
+                  <h3 class="count-to font-alt" data-countto="8"></h3>
+                  <h5 class="count-title font-serif">Siswa Aktif</h5>
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-3 col-lg-3">
+                <div class="count-item mb-sm-40">
+                  <div class="count-icon"><span class="icon-camera"></span></div>
+                  <h3 class="count-to font-alt" data-countto="184"></h3>
+                  <h5 class="count-title font-serif">Tenaga Pendidik</h5>
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-3 col-lg-3">
+                <div class="count-item mb-sm-40">
+                  <div class="count-icon"><span class="icon-map-pin"></span></div>
+                  <h3 class="count-to font-alt" data-countto="32"></h3>
+                  <h5 class="count-title font-serif">Tenaga Kependidikan</h5>
+                </div>
               </div>
             </div>
           </div>
