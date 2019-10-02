@@ -7,7 +7,8 @@
             <ul class="nav navbar-nav navbar-right">
               <li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown">Profil</a>
                 <ul class="dropdown-menu">
-                  <li><a href="index_mp_fullscreen_video_background.html">Sekolah</a></li>
+                  <li><a href="{{route('profilsekolah_master')}}">Sekolah</a></li>
+                  <li><a href="{{route('visimisi_master')}}">Visi Misi</a></li>
                   <li><a href="index_op_fullscreen_gradient_overlay.html">Tenaga Pendidik</a></li>
                 </ul>
               </li>
@@ -18,7 +19,9 @@
                   <li><a href="/jurusan/multimedia">MULTIMEDIA</a></li>
                 </ul>
               </li>
+              <li ><a href="{{route('berita_master')}}" >Berita</a>
               <li ><a href="/alumni" >Alumni</a>
+              <li ><a href="{{route('filesmapel_master')}}" >Materi</a>  
                 
               </li>
               <li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown">PPDB2019</a>

@@ -4,9 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class files extends Model
+class visimisi extends Model
 {
-    protected $table = 'files';
-    protected $primaryKey = 'id_files';
+    protected $table = 'visimisi';
     public $timestamps = false;
 }

@@ -26,7 +26,7 @@
                     <div class="post">
                       <div class="post-thumbnail"><a href="#"><img src="{{ url('images/originals/cover/'.$album[$i]->cover) }}" height="800px " width="460px" alt="Blog-post Thumbnail"/></a></div>
                       <div class="post-header font-alt">
-                        <h2 class="post-title"><a href="/gallery/{{$album[$i]->id}}">{{$album[$i]->judul}}</a></h2>
+                        <h2 class="post-title"><a href="{{route('gallery_view', ['id_album' => $album[$i]->id, 'judul' => $album[$i]->judul])}}">{{$album[$i]->judul}}</a></h2>
                         <div class="post-meta">By&nbsp;<a href="#">Mark Stone</a>&nbsp;| 23 November | 3 Comments
                         </div>
                       </div>

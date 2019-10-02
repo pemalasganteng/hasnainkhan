@@ -19,7 +19,11 @@ use App\kategori;
 use App\berita;
 use App\alumni;
 use App\jurusan;
-
+use App\mapel;
+use App\files;
+use Auth;
+use App\visimisi;
+use App\profilsekolah;
 
 class AdminController extends Controller
 {
@@ -98,7 +102,7 @@ class AdminController extends Controller
         ->where('kategori.id_kategori', '=', $idkat)
         ->select('*')
         ->get();
-        return view('admin/beritaedit', ['edit' => $edit, 'b' => $b, 'kategori' => $kategori]);
+        return view('admin2/beritaedit', ['edit' => $edit, 'b' => $b, 'kategori' => $kategori]);
     }
     public function berita_update(Request $request){
         if($request->cover == NULL){
@@ -206,7 +210,7 @@ class AdminController extends Controller
 	public function index()
     {
     	$slider = slider::all();
-    	$katadepan = katadepan::find(3);
+    	$katadepan = katadepan::find(1);
 
     	return view('admin/slidebar',['slider' => $slider, 'katadepan' => $katadepan]);  
     
@@ -268,7 +272,7 @@ class AdminController extends Controller
             $slider->gambar = $name;
 			$slider->deskripsi = $request->keterangan;
 
-           dd($slider);
+        
             
 
 			$slider->save();
@@ -316,7 +320,7 @@ class AdminController extends Controller
 
     public function katasambutan(){
 
-        $katadepan = katadepan::find(3);
+        $katadepan = katadepan::find(1);
 
         return view('admin2/katasambutan',['katadepan' => $katadepan]);
 
@@ -332,7 +336,7 @@ class AdminController extends Controller
 
 
 
-        $kata=  katadepan::find(3) ;
+        $kata=  katadepan::find(1) ;
 
         	$kata->judul = $request->judul;
         	    
@@ -886,6 +890,159 @@ public function jurusan_up(Request $request){
         }
 
 
-}
+    }
+public function files(){
+    $mapel = mapel::all();
+    return view('admin2/files', compact('mapel'));
+} 
 
+public function up_mapel(Request $request){
+    $validator = Validator::make($request->all(), [
+            'nama_mapel' => 'required'
+           
+            ]);
+        if ($validator->fails()) {
+            return redirect()->back()->with('gagal','gagal menambhkan mapel!');
+        }
+        else {
+            
+            $mapel = new mapel;
+
+            $mapel->nama_mapel = $request->nama_mapel;
+
+            $mapel->save();
+
+            return redirect()->back()->with('sukses','menambhkan mapel!');
+        }
+
+    }
+    public function up_files(Request $request){
+        $validator = Validator::make($request->all(), [
+            'judul' => 'required',
+            'id_mapel' => 'required',
+            'deskripsi' => 'required',
+            'files' => 'mimes:doc,pdf,docx,zip',
+            'id' => 'required'
+            ]);
+        if ($validator->fails()){
+            return redirect()->back()->with('gagal','Gagal!');
+            }
+        else {
+            $uploadedFile = $request->file('files');
+            $name = time().'.'.$uploadedFile->getClientOriginalName();
+            $path = $uploadedFile->move('files',$name);
+            $files = new files;
+            $files->id_mapel = $request->id_mapel;
+            $files->judul = $request->judul;
+            $files->deskripsi = $request->deskripsi;
+            $files->file = $name;
+            $files->id_users = $request->id;
+            $files->save();
+            return redirect()->back()->with('sukses','berhasil menambahkan data!');
+        }
+    }
+    public function filesmapelcontroller(){
+        if(Auth::User()->role == 1){
+        $id = Auth::User()->id;
+        $files = files::all();   
+        }
+        else {
+        $id = Auth::User()->id;
+        $files = files::where('id_users',$id)->orderBy('id_files', 'desc')->get();
+        }
+        return view('admin2/filesmapelcontroll', compact('files'));
+    }
+
+    public function filesmapeldel(Request $request,$id){
+        $files = files::find($id);
+        if($files == null){
+            return abort('404');
+        }
+        else {
+        $path = public_path()."/files/".$files->file;
+        unlink($path);
+        $files->forceDelete();
+        return redirect()->back()->with('sukses','sukses menghapus!');
+        }
+    }
+    public function filesmapeledit(Request $request,$id){
+        $files = files::find($id);
+        $idmapel = $files->id_mapel;
+        $mapels = mapel::all();
+        $mapel = DB::table('files')
+        ->join('mapel', 'files.id_mapel', '=', 'mapel.id_mapel')
+        ->where('mapel.id_mapel', '=', $idmapel)
+        ->select('*')
+        ->get();
+        if($files == null){
+            return abort('404');
+        }else {
+            return view('admin2/filesmapeledit', compact('files','mapel','mapels'));
+        }
+    }
+    public function filesmapel_store(Request $request){
+        $validator = Validator::make($request->all(), [
+            'files' => 'mimes:doc,pdf,docx,zip',
+            ]);
+        $files = files::find($request->id);
+        if ($validator->fails()){
+            return redirect()->back()->with('gagal','Gagal!');
+            }
+        if($request->file('files') == NULL){
+            $files->judul = $request->judul;
+            $files->id_mapel = $request->id_mapel;
+            $files->file = $files->file;
+            $files->deskripsi = $request->deskripsi;
+            $files->save();
+            return redirect()->back()->with('sukses','berhasil!');
+        }else{
+            $uploadedFile = $request->file('files');
+            $name = time().'.'.$uploadedFile->getClientOriginalName();
+            $path = $uploadedFile->move('files',$name);
+            $path = public_path()."/files/".$files->file;
+            unlink($path);
+            $files->judul = $request->judul;
+            $files->file = $name;
+            $files->id_mapel = $request->id_mapel;
+            $files->deskripsi = $request->deskripsi;
+            $files->save();
+            return redirect()->back()->with('sukses','berhasil!');
+        }
+        }
+    public function visimisi(){
+        $visimisi = visimisi::find(1);
+        return view('admin2/visimisi', compact('visimisi'));
+    }
+    public function visimisi_store(Request $request){
+        $validator = Validator::make($request->all(), [
+            'isi' => 'required',
+            ]);
+        $isi = visimisi::find(1);
+        if($request->isi == NULL) {
+            return redirect()->back()->with('gagal','Isi tidak boleh kosong!');
+        }
+        else {
+            $isi->isi = $request->isi;
+            $isi->save();
+            return redirect()->back()->with('sukses','edit berhasil!');
+        }
+    }
+     public function profilsekolah(){
+        $profilsekolah = profilsekolah::find(1);
+        return view('admin2/profilsekolah', compact('profilsekolah'));
+    }
+    public function profilsekolah_store(Request $request){
+        $validator = Validator::make($request->all(), [
+            'isi' => 'required',
+            ]);
+        $isi = profilsekolah::find(1);
+        if($request->isi == NULL) {
+            return redirect()->back()->with('gagal','Isi tidak boleh kosong!');
+        }
+        else {
+            $isi->isi = $request->isi;
+            $isi->save();
+            return redirect()->back()->with('sukses','edit berhasil!');
+        }
+    }
 }

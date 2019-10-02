@@ -2,12 +2,13 @@
         <div class="sidebar-menu">
             <div class="sidebar-header">
                 <div class="logo">
-                    <a href="index.html"><img src="{{asset('master/admin3/assets/images/icon/logo.png')}}" alt="logo"></a>
+                    <a href="/admin"><img src="{{asset('master/assets/images/logo2.png')}}" alt="logo"></a>
                 </div>
             </div>
             <div class="main-menu">
                 <div class="menu-inner">
                     <nav>
+                        @if (Auth::user()->role == 1)
                         <ul class="metismenu" id="menu">
                             <li >
                                 <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-align-left"></i> <span>Halamann Depan</span></a>
@@ -30,7 +31,8 @@
                                             
                                         </ul>
                                     </li>
-                                    <li><a href="#">Item level (1)</a></li>
+                                    <li><a href="{{route('profilsekolah')}}">Profil Sekolah</a></li>
+                                    <li><a href="{{route('visimisi')}}">Visi Misi</a></li>
                                 </ul>
                             </li>
 
@@ -55,8 +57,8 @@
                             <li >
                                 <a href="javascript:void(0)" aria-expanded="true"><i class="ti-comment-alt"></i> <span>Berita</span></a>
                                 <ul class="collapse">
-                                    <li><a href="/admin/berita  ">Input Berita</a></li>
-                                    <li><a href="/admin/data-berita">Data Berita</a></li>
+                                    <li><a href="{{route('berita_add')}}">Input Berita</a></li>
+                                    <li><a href="{{route('berita_data')}}">Data Berita</a></li>
                                 </ul>
                             </li>
 
@@ -75,8 +77,29 @@
                                     
                                 </ul>
                             </li>
-                            
-                            
+                              <li >
+                                <a href="javascript:void(0)" aria-expanded="true"><i class="ti-bookmark"></i> <span>Files</span></a>
+                                <ul class="collapse">
+                                    <li><a href="/admin/filesmapel">Input Files</a></li>
+                                    <li><a href="/admin/filesmapelcontroll">Kontrol Files</a></li>
+                                    
+                                </ul>
+                            </li>
+                        @endif
+                        @if (Auth::user()->role == 2)
+                        <ul class="metismenu" id="menu">
+                            <li >
+                               
+                           
+                              <li >
+                                <a href="javascript:void(0)" aria-expanded="true"><i class="ti-bookmark"></i> <span>Files</span></a>
+                                <ul class="collapse">
+                                    <li><a href="/admin/filesmapel">Input Files</a></li>
+                                    <li><a href="/admin/filesmapelcontroll">Kontrol Files</a></li>
+                                    
+                                </ul>
+                            </li>    
+                         @endif   
                         </ul>
                     </nav>
                 </div>
