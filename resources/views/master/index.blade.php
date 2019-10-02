@@ -55,28 +55,28 @@
               <div class="col-sm-6 col-md-3 col-lg-3">
                 <div class="count-item mb-sm-40">
                   <div class="count-icon"><span class="icon-wallet"></span></div>
-                  <h3 class="count-to font-alt" data-countto="6543"></h3>
+                  <h3 class="count-to font-alt" data-countto="{{$statistik[0]->s_baru}}"></h3>
                   <h5 class="count-title font-serif">Siswa Baru</h5>
                 </div>
               </div>
               <div class="col-sm-6 col-md-3 col-lg-3">
                 <div class="count-item mb-sm-40">
                   <div class="count-icon"><span class="icon-wine"></span></div>
-                  <h3 class="count-to font-alt" data-countto="8"></h3>
+                  <h3 class="count-to font-alt" data-countto="{{$statistik[0]->s_aktif}}"></h3>
                   <h5 class="count-title font-serif">Siswa Aktif</h5>
                 </div>
               </div>
               <div class="col-sm-6 col-md-3 col-lg-3">
                 <div class="count-item mb-sm-40">
                   <div class="count-icon"><span class="icon-camera"></span></div>
-                  <h3 class="count-to font-alt" data-countto="184"></h3>
+                  <h3 class="count-to font-alt" data-countto="{{$statistik[0]->t_pendidik}}"></h3>
                   <h5 class="count-title font-serif">Tenaga Pendidik</h5>
                 </div>
               </div>
               <div class="col-sm-6 col-md-3 col-lg-3">
                 <div class="count-item mb-sm-40">
                   <div class="count-icon"><span class="icon-map-pin"></span></div>
-                  <h3 class="count-to font-alt" data-countto="32"></h3>
+                  <h3 class="count-to font-alt" data-countto="{{$statistik[0]->t_kependidikan}}"></h3>
                   <h5 class="count-title font-serif">Tenaga Kependidikan</h5>
                 </div>
               </div>
@@ -112,16 +112,27 @@
             </div>
           </div>
         </section>
-        <section class="module bg-dark-60" data-background="master/assets/images/section-6.jpg">
+        <section class="module module-video bg-dark-30" data-background="assets/images/section-12.jpg">
           <div class="container">
             <div class="row">
               <div class="col-sm-12">
-                <div class="video-box">
-                  <div class="video-box-icon"><a class="video-pop-up" href="https://www.youtube.com/watch?v=TTxZj3DZiIM"><span class="icon-video"></span></a></div>
-                  <div class="video-title font-alt">Presentation</div>
-                  <div class="video-subtitle font-alt">Watch the video about our new products</div>
-                </div>
+                <h2 class="module-title font-alt align-left">{{$video[0]->judul}}</h2>
               </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="font-serif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                <p class="font-serif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+              </div>
+              <div class="col-sm-3">
+                <p class="font-serif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+              </div>
+            </div>
+          </div>
+          <div class="video-player" data-property="{videoURL:'{{$video[0]->alamat}}', containment:'.module-video', startAt:0, mute:false, autoPlay:true, loop:true, opacity:1, showControls:false, showYTLogo:false, vol:25}"></div>
+          <div class="video-controls-box">
+            <div class="container">
+              <div class="video-controls"><a class="fa fa-volume-up" id="video-volume" href="#">&nbsp;</a><a class="fa fa-pause" id="video-play" href="#">&nbsp;</a></div>
             </div>
           </div>
         </section>

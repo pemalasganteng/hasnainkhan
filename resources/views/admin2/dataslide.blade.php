@@ -44,7 +44,8 @@
                                                   <td>{{$slider->gambar}}</td>
                                                   <td>2</td>
                                                   <td><a href="#" class="btn btn-green">  <i class="fa fa-edit"> </i>   edit</a>
-                                                    <a href="/admin/slider/del/{{$slider->id}}" class="btn btn-red">  <i class="fa fa-trash-o"> </i>   hapus</a>
+                                                    
+                                                    <a href="{{route ('del_slider', $slider->id)}}" class="btn btn-red">  <i class="fa fa-trash-o"> </i>   hapus</a>
                                                  </td>
                                             </tr>
                                                 @endforeach

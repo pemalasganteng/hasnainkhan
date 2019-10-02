@@ -146,6 +146,7 @@
     <!-- others plugins -->
     <script src="{{asset('master/admin3/assets/js/plugins.js')}}"></script>
     <script src="{{asset('master/admin3/assets/js/scripts.js')}}"></script>
+    @yield('js')
 </body>
 
 </html>

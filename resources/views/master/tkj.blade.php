@@ -2,44 +2,45 @@
 
 	@section('isi')
 
-
-		<section class="home-section home-parallax home-fade home-full-height bg-dark-60 agency-page-header" id="home" data-background="{{asset('master/assets/images/3.jpg')}}">
-        <div class="titan-caption">
+    @if (count($p) == 0)
+        <section class="home-section home-parallax home-fade home-full-height bg-dark-60 agency-page-header" id="home" data-background="{{asset('master/assets/images/3.jpg')}}">
+        @else
+          <section class="home-section home-parallax home-fade home-full-height bg-dark-60 agency-page-header" id="home" data-background="{{ url('gambar/jurusan/modal/'.$p[0]->gambar_top) }}">
+    @endif
+		
+    @if (count($p) == 0)
+      <div class="titan-caption">
           <div class="caption-content">
-            <div class="font-alt mb-30 titan-title-size-1">Grow your awesome idea</div>
-            <div class="font-alt mb-40 titan-title-size-3">Make business <span class="rotate">easy | simple | flexible</span>
+            <div class="font-alt mb-30 titan-title-size-1">Isikan Judul</div>
+            <div class="font-alt mb-40 titan-title-size-3">Isikan Isi
             </div><a class="section-scroll btn btn-border-w btn-circle" href="#about">Learn More</a>
           </div>
         </div>
+
+        @else
+        <div class="titan-caption">
+          <div class="caption-content">
+            <div class="font-alt mb-30 titan-title-size-1">{{$p[0]->judul_top}}</div>
+            <div class="font-alt mb-40 titan-title-size-3">{{$p[0]->deskripsi_top}}
+            </div><a class="section-scroll btn btn-border-w btn-circle" href="#about">Learn More</a>
+          </div>
+        </div>
+    @endif
       </section>
       <div class="main">
         <section class="module">
           <div class="container">
             <div class="row multi-columns-row">
+             <h2 class="module-title font-alt">Keunggulan</h2>
+              @for($i=0; $i<count($keunggulan); $i++)
               <div class="col-md-3 col-sm-6 col-xs-12">
                 <div class="features-item">
-                  <div class="features-icon"><span class="icon-lightbulb"></span></div>
-                  <h3 class="features-title font-alt">Ideas and concepts</h3>Careful attention to detail and clean, well structured code ensures a smooth user experience for all your visitors.
+                  <div class="features-icon"><span class="{{$keunggulan[$i]->icon}}"></span></div>
+                  <h3 class="features-title font-alt">{{$keunggulan[$i]->judul}}</h3>{{$keunggulan[$i]->isi}}
                 </div>
               </div>
-              <div class="col-md-3 col-sm-6 col-xs-12">
-                <div class="features-item">
-                  <div class="features-icon"><span class="icon-tools"></span></div>
-                  <h3 class="features-title font-alt">Designs &amp; interfaces</h3>Careful attention to detail and clean, well structured code ensures a smooth user experience for all your visitors.
-                </div>
-              </div>
-              <div class="col-md-3 col-sm-6 col-xs-12">
-                <div class="features-item">
-                  <div class="features-icon"><span class="icon-tools-2"></span></div>
-                  <h3 class="features-title font-alt">Coding &amp; development</h3>Careful attention to detail and clean, well structured code ensures a smooth user experience for all your visitors.
-                </div>
-              </div>
-              <div class="col-md-3 col-sm-6 col-xs-12">
-                <div class="features-item">
-                  <div class="features-icon"><span class="icon-lifesaver"></span></div>
-                  <h3 class="features-title font-alt">Dedicated support</h3>Careful attention to detail and clean, well structured code ensures a smooth user experience for all your visitors.
-                </div>
-              </div>
+              @endfor
+              
             </div>
           </div>
         </section>
@@ -51,42 +52,18 @@
               <div class="col-sm-6">
                 <h4 class="font-alt mb-30">Frequently Asked Questions</h4>
                 <div class="panel-group" id="accordion">
+                  @for($i=0; $i<count($alasan); $i++)
                   <div class="panel panel-default">
                     <div class="panel-heading">
-                      <h4 class="panel-title font-alt"><a data-toggle="collapse" data-parent="#accordion" href="#support1">Support Question 1</a></h4>
+                      <h4 class="panel-title font-alt"><a data-toggle="collapse" data-parent="#accordion" href="#support{{$i}}">{{$alasan[$i]->pertanyaan}}</a></h4>
                     </div>
-                    <div class="panel-collapse collapse in" id="support1">
-                      <div class="panel-body">Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et.
+                    <div class="panel-collapse collapse in" id="support{{$i}}">
+                      <div class="panel-body">{{$alasan[$i]->jawaban}}
                       </div>
                     </div>
                   </div>
-                  <div class="panel panel-default">
-                    <div class="panel-heading">
-                      <h4 class="panel-title font-alt"><a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#support2">Support Question 2</a></h4>
-                    </div>
-                    <div class="panel-collapse collapse" id="support2">
-                      <div class="panel-body">Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et.
-                      </div>
-                    </div>
-                  </div>
-                  <div class="panel panel-default">
-                    <div class="panel-heading">
-                      <h4 class="panel-title font-alt"><a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#support3">Support Question 3</a></h4>
-                    </div>
-                    <div class="panel-collapse collapse" id="support3">
-                      <div class="panel-body">Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et.
-                      </div>
-                    </div>
-                  </div>
-                  <div class="panel panel-default">
-                    <div class="panel-heading">
-                      <h4 class="panel-title font-alt"><a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#support4">Support Question 4</a></h4>
-                    </div>
-                    <div class="panel-collapse collapse" id="support4">
-                      <div class="panel-body">Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et.
-                      </div>
-                    </div>
-                  </div>
+                  @endfor
+                  
                 </div>
               </div>
               <div class="col-sm-6">
@@ -125,68 +102,85 @@
             </div>
           </div>
         </section>
-        <section class="module pb-0" id="works">
+        
+        <section class="module">
           <div class="container">
-            <div class="row">
-              <div class="col-sm-6 col-sm-offset-3">
-                <h2 class="module-title font-alt">Our Works</h2>
-                <div class="module-subtitle font-serif"></div>
+          <h2 class="module-title font-alt">Gallery</h2>
+            <div class="row multi-columns-row">
+               @for($i=0; $i<count($gallery); $i++)
+              <div class="col-sm-6 col-md-4 col-lg-4">
+                <div class="gallery-item">
+                  <div class="gallery-image"><a class="gallery" href="{{ url('gambar/jurusan/gallery/'.$gallery[$i]->file) }}" title="Title 1"><img src="{{ url('gambar/jurusan/gallery/'.$gallery[$i]->file) }}" alt="Gallery Image 1"/>
+                      <div class="gallery-caption">
+                        <div class="gallery-icon"><span class="icon-magnifying-glass"></span></div>
+                      </div></a></div>
+                </div>
               </div>
+              @endfor
+              
             </div>
-          </div>
-          <div class="container">
-            <div class="row">
-              <div class="col-sm-12">
-                <ul class="filter font-alt" id="filters">
-                  <li><a class="current wow fadeInUp" href="#" data-filter="*">All</a></li>
-                  <li><a class="wow fadeInUp" href="#" data-filter=".illustration" data-wow-delay="0.2s">Illustration</a></li>
-                  <li><a class="wow fadeInUp" href="#" data-filter=".marketing" data-wow-delay="0.4s">Marketing</a></li>
-                  <li><a class="wow fadeInUp" href="#" data-filter=".photography" data-wow-delay="0.6s">Photography</a></li>
-                  <li><a class="wow fadeInUp" href="#" data-filter=".webdesign" data-wow-delay="0.6s">Web Design</a></li>
-                </ul>
-              </div>
-            </div>
-            <ul class="works-grid works-grid-gut works-grid-3 works-hover-d" id="works-grid">
-              <li class="work-item illustration webdesign"><a href="portfolio_single_featured_image1.html">
-                  <div class="work-image"><img src="{{asset('master/assets/images/portfolio/grid-portfolio1.jpg')}}" alt="Portfolio Item"/></div>
-                  <div class="work-caption font-alt">
-                    <h3 class="work-title">Corporate Identity</h3>
-                    <div class="work-descr">Illustration</div>
-                  </div></a></li>
-              <li class="work-item marketing photography"><a href="portfolio_single_featured_image2.html">
-                  <div class="work-image"><img src="{{asset('master/assets/images/portfolio/grid-portfolio2.jpg')}}" alt="Portfolio Item"/></div>
-                  <div class="work-caption font-alt">
-                    <h3 class="work-title">Bag MockUp</h3>
-                    <div class="work-descr">Marketing</div>
-                  </div></a></li>
-              <li class="work-item illustration photography"><a href="portfolio_single_featured_slider1.html">
-                  <div class="work-image"><img src="{{asset('master/assets/images/portfolio/grid-portfolio3.jpg')}}" alt="Portfolio Item"/></div>
-                  <div class="work-caption font-alt">
-                    <h3 class="work-title">Disk Cover</h3>
-                    <div class="work-descr">Illustration</div>
-                  </div></a></li>
-              <li class="work-item marketing photography"><a href="portfolio_single_featured_slider2.htmll">
-                  <div class="work-image"><img src="{{asset('master/assets/images/portfolio/grid-portfolio4.jpg')}}" alt="Portfolio Item"/></div>
-                  <div class="work-caption font-alt">
-                    <h3 class="work-title">Business Card</h3>
-                    <div class="work-descr">Photography</div>
-                  </div></a></li>
-              <li class="work-item illustration webdesign"><a href="portfolio_single_featured_video1.html">
-                  <div class="work-image"><img src="{{asset('master/assets/images/portfolio/grid-portfolio5.jpg')}}" alt="Portfolio Item"/></div>
-                  <div class="work-caption font-alt">
-                    <h3 class="work-title">Web Design</h3>
-                    <div class="work-descr">Webdesign</div>
-                  </div></a></li>
-              <li class="work-item marketing webdesign"><a href="portfolio_single_featured_video2.html">
-                  <div class="work-image"><img src="{{asset('master/assets/images/portfolio/grid-portfolio6.jpg')}}" alt="Portfolio Item"/></div>
-                  <div class="work-caption font-alt">
-                    <h3 class="work-title">Paper clip</h3>
-                    <div class="work-descr">Marketing</div>
-                  </div></a></li>
-            </ul>
           </div>
         </section>
-      
+        <div class="module-small bg-dark">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-3">
+                <div class="widget">
+                  <h5 class="widget-title font-alt">About Titan</h5>
+                  <p>The languages only differ in their grammar, their pronunciation and their most common words.</p>
+                  <p>Phone: +1 234 567 89 10</p>Fax: +1 234 567 89 10
+                  <p>Email:<a href="#">somecompany@example.com</a></p>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="widget">
+                  <h5 class="widget-title font-alt">Recent Comments</h5>
+                  <ul class="icon-list">
+                    <li>Maria on <a href="#">Designer Desk Essentials</a></li>
+                    <li>John on <a href="#">Realistic Business Card Mockup</a></li>
+                    <li>Andy on <a href="#">Eco bag Mockup</a></li>
+                    <li>Jack on <a href="#">Bottle Mockup</a></li>
+                    <li>Mark on <a href="#">Our trip to the Alps</a></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="widget">
+                  <h5 class="widget-title font-alt">Blog Categories</h5>
+                  <ul class="icon-list">
+                    <li><a href="#">Photography - 7</a></li>
+                    <li><a href="#">Web Design - 3</a></li>
+                    <li><a href="#">Illustration - 12</a></li>
+                    <li><a href="#">Marketing - 1</a></li>
+                    <li><a href="#">Wordpress - 16</a></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="widget">
+                  <h5 class="widget-title font-alt">Popular Posts</h5>
+                  <ul class="widget-posts">
+                    <li class="clearfix">
+                      <div class="widget-posts-image"><a href="#"><img src="assets/images/rp-1.jpg" alt="Post Thumbnail"/></a></div>
+                      <div class="widget-posts-body">
+                        <div class="widget-posts-title"><a href="#">Designer Desk Essentials</a></div>
+                        <div class="widget-posts-meta">23 january</div>
+                      </div>
+                    </li>
+                    <li class="clearfix">
+                      <div class="widget-posts-image"><a href="#"><img src="assets/images/rp-2.jpg" alt="Post Thumbnail"/></a></div>
+                      <div class="widget-posts-body">
+                        <div class="widget-posts-title"><a href="#">Realistic Business Card Mockup</a></div>
+                        <div class="widget-posts-meta">15 February</div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
      
       
         
