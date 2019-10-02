@@ -105,9 +105,11 @@
                                     <tr>
                                        <td><img src="{{ url('images/originals/'.$image->image) }}" width="200px"> {{$image->image}}</td>
                                        <td>
+
                                             
                                             <a href="{{ route ('del_perfoto' , $image->id)}}" class="btn btn-red">  <i class="fa fa-trash-o"> </i>   hapus</a>
                                             <a href="" onclick="confirm('pepek ?')">tes</a>
+
                                         </td>
                                         
                                         

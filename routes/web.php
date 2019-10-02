@@ -20,10 +20,24 @@ Route::get('/jurusan/{id}' , 'MasterController@jurusan')->name('jurusan');
 
 Route::get('/alumni', 'MasterController@alumni')->name('alumni');
 
+
 Route::get('/gallery', 'MasterController@gallery')->name('gallery_foto');
 Route::get('/gallery/{id_album}', 'MasterController@gallery2')->name('gallery_foto2');
 
-Route::get('/berita', 'MasterController@berita');
+
+Route::get('/berita', 'MasterController@berita')->name('berita_master');
+Route::get('/berita/{judul}/id/{id}', 'MasterController@berita_view')->name('berita_view');
+Route::post('/seach/berita', 'MasterController@berita_search')->name('berita_search2');
+
+//files master
+Route::get('/filesmapel', 'MasterController@files')->name('filesmapel_master');
+Route::post('/search', 'MasterController@filesmapel_search')->name('filesmapel_search');
+
+//visimisi
+Route::get('/visimisi', 'MasterController@visimisi')->name('visimisi_master');
+
+//profilsekolah
+Route::get('/profilsekolah', 'MasterController@profilsekolah')->name('profilsekolah_master');
 
 
 
@@ -102,9 +116,9 @@ Route::get('/admin/alumni/del/{id}', 'AdminController@alumni_del')->name('del_al
 
 Route::get('/ppdb', 'AdminController@ppdb');
 Route::get('/admin/berita', 'AdminController@berita_add2')->name('berita_add');
-Route::get('/admin/data-berita', 'AdminController@berita_controller2')->name('berita_add');
+Route::get('/admin/data-berita', 'AdminController@berita_controller2')->name('berita_data');
 
-Route::get('/admin/berita/add', 'AdminController@berita_add')->name('berita_add');
+Route::get('/admin/berita/add', 'AdminController@berita_add')->name('berita_add1');
 Route::post('/admin/berita/store', 'AdminController@berita_store')->name('berita_store');
 Route::get('/admin/berita/controller', 'AdminController@berita_controller')->name('berita_controller');
 Route::post('/admin/berita/del', 'AdminController@berita_del')->name('berita_del');
@@ -117,3 +131,20 @@ Route::post('upload_image','AdminController@berita_upimage')->name('berita_upima
 
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+//FILES and MAPEL
+Route::get('/admin/filesmapel', 'AdminController@files');
+Route::post('up_mapel','AdminController@up_mapel')->name('up_mapel');
+Route::post('up_files','AdminController@up_files')->name('up_files');
+Route::get('/admin/filesmapelcontroll', 'AdminController@filesmapelcontroller')->name('filesmapelcontroller');
+Route::get('/admin/filesmapeldel/{id}','AdminController@filesmapeldel')->name('filesmapeldel');
+Route::get('/admin/filesmapeledit/{id}', 'AdminController@filesmapeledit')->name('filesmapeledit');
+Route::post('/admin/filesmapel_store', 'AdminController@filesmapel_store')->name('filesmapel_store');
+
+//Visi misi
+Route::get('/admin/visimisi', 'AdminController@visimisi')->name('visimisi');
+Route::post('/admin/visimisi_store', 'Admincontroller@visimisi_store')->name('visimisi_store');
+
+//profilsekolah
+Route::get('/admin/profilsekolah', 'AdminController@profilsekolah')->name('profilsekolah');
+Route::post('/admin/profilsekolah', 'Admincontroller@profilsekolah_store')->name('profilsekolah_store');

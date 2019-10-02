@@ -4,9 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class files extends Model
+class profilsekolah extends Model
 {
-    protected $table = 'files';
-    protected $primaryKey = 'id_files';
+    protected $table = 'profilsekolah';
     public $timestamps = false;
 }
