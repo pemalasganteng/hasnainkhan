@@ -53,7 +53,7 @@ class MasterController extends Controller
         $master = keunggulan::find(1);
 
         $kepala = kepala::find(1);
-    	return view('master/index',['slider' => $slider, 'katadepan' => $katadepan, 'keunggulan' => $keunggulan, 'master' => $master, 'kepala' => $kepala  ]); 
+    	return view('master/index',['slider' => $slider, 'katadepan' => $katadepan, 'keunggulan' => $keunggulan, 'master' => $master, 'kepala' => $kepala, 'statistik' => $statistik, 'video' => $video  ]); 
 
 
     

@@ -33,7 +33,6 @@ use Auth;
 
 use App\mapel;
 use App\files;
-use Auth;
 use App\visimisi;
 use App\profilsekolah;
 
@@ -1028,7 +1027,7 @@ public function up_mapel(Request $request){
             return redirect()->back()->with('sukses','menambhkan mapel!');
         }
 
-
+    }
     public function jurusan_up_modal(Request $request,$id){
 
     $validator = Validator::make($request->all(), [
@@ -1272,7 +1271,6 @@ public function up_mapel(Request $request){
         }
     }
 
-}
 
     public function jurusan_edit_keunggulan(Request $request,$id){
         
