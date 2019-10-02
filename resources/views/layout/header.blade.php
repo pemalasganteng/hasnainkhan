@@ -1,7 +1,7 @@
 <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
         <div class="container">
           <div class="navbar-header">
-            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#custom-collapse"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a src="{{asset('master/assets/images/logo2.png')}}" class="navbar-brand"  href="/"><img src="{{asset('master/assets/images/logo2.png')}}" width="118" height="14"></a>
+            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#custom-collapse"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a src="{{asset('master/assets/images/logo2.png')}}" class="navbar-brand"  href="{{route('home2') }}"><img src="{{asset('master/assets/images/logo2.png')}}" width="118" height="14"></a>
           </div>
           <div class="collapse navbar-collapse" id="custom-collapse">
             <ul class="nav navbar-nav navbar-right">
@@ -12,13 +12,15 @@
                 </ul>
               </li>
               <li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown">Jurusan</a>
-                <ul class="dropdown-menu">
-                  <li><a href="/jurusan/tkj">TKJ</a></li>
-                  <li><a href="/jurusan/perbankan">PERBANKAN</a></li>
-                  <li><a href="/jurusan/multimedia">MULTIMEDIA</a></li>
+                <ul class="dropdown-menu" role="menu">
+                  
+                  @for($i=0; $i<count($coba); $i++)
+                  <li><a href="{{ route('jurusan', $coba[$i]->id) }}"> {{$coba[$i]->jurusan}}</a></li>
+                  @endfor
+
                 </ul>
               </li>
-              <li ><a href="/alumni" >Alumni</a>
+              <li ><a href="{{route ('alumni')}}" >Alumni</a>
                 
               </li>
               <li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown">PPDB2019</a>
@@ -33,7 +35,8 @@
               </li>
               <li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown">Gallery</a>
                 <ul class="dropdown-menu" role="menu">
-                  <li><a href="/gallery"><i class="fa fa-bolt"></i> Gallery Foto</a></li>
+                 
+                  <li><a href="{{route ('gallery_foto') }}"><i class="fa fa-bolt"></i> Gallery Foto</a></li>
                   <li><a href="buttons.html"><i class="fa fa-link fa-sm"></i> Gallery Video</a></li>
                   
                 </ul>
@@ -50,6 +53,8 @@
                   <li><a href="shop_checkout.html">Checkout</a></li>
                 </ul>
               </li>
+             
+              
               <!--li.dropdown.navbar-cart-->
               <!--    a.dropdown-toggle(href='#', data-toggle='dropdown')-->
               <!--        span.icon-basket-->

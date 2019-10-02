@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use View;
 use Illuminate\Support\Facades\DB;
 use App\slider;
 use App\katadepan;
@@ -14,25 +14,52 @@ use App\album;
 use App\alumni;
 use App\berita;
 use App\galeri;
+use App\jurusan;
+use App\filejurusan;
+use App\jurkeunggulan;
+use App\juralasan;
+use App\jurgallery;
+use App\statistik;
+use App\videodepan;
 
 
 
 class MasterController extends Controller
 {
-    
+     public function __construct()
+    {
+
+       
+        $jurusan = jurusan::all();
+
+        View::share('coba', $jurusan);
+    }
 	public function index()
     {
     	
         $slider = slider::all();
         $katadepan = katadepan::all();
         $keunggulan = keunggulan::all();
-
+        $statistik = statistik::all();
+        $video = videodepan::all();
         $master = keunggulan::find(1);
         $kepala = kepala::find(3);
-    	return view('master/index',['slider' => $slider, 'katadepan' => $katadepan, 'keunggulan' => $keunggulan, 'master' => $master, 'kepala' => $kepala  ]); 
+    	return view('master/index',['slider' => $slider, 'katadepan' => $katadepan, 'keunggulan' => $keunggulan, 'master' => $master, 'kepala' => $kepala , 'statistik' => $statistik , 'video' => $video]); 
 
     
     }
+
+    public function jurusan($id){
+
+    $jurusan = jurusan::where('id' ,'=' ,$id)->get();
+    $p       = filejurusan::where('id_jurusan' ,'=' ,$id)->get();
+    $keunggulan  = jurkeunggulan::where('id_jurusan' ,'=' ,$id)->get();
+    $alasan     = juralasan::where('id_jurusan', '=' , $id)->get();
+    $gallery   = jurgallery::where('id_jurusan', '=' , $id)->get();
+
+
+    return view('master/tkj',compact('jurusan','p','keunggulan','alasan','gallery'));
+}
 
     public function tkj()
     {
@@ -69,7 +96,7 @@ class MasterController extends Controller
     {   
          $users = db::table('album')->join('galleries', 'album.id', '=', 'galleries.id_album')->select('album.*', 'galleries.image')->get();
         
-        $album =album::all();
+        $album =album::orderBy('created_at', 'desc')->paginate(6);
        return view('master/mgallery',compact('users','album'));
     
     }

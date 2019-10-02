@@ -23,30 +23,20 @@
     	<div class="col-lg-12 mt-5">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="header-title">Data Alumni</h4>
+                                <h4 class="header-title">Data Modal</h4>
                                 <div class="single-table">
                                     <div class="table-responsive">
                                         <table class="table table-striped text-center">
                                             <thead class="text-uppercase">
                                                 <tr>
-                                                    <th scope="col">Foto</th>
-                                                    <th scope="col">Nama</th>
-                                                    <th scope="col">Tahun</th>
+                                                    <th scope="col">judul</th>
+                                                    <th scope="col">deskripsi</th>
+                                                    <th scope="col">gambar</th>
                                                     <th scope="col">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach($alumni as $alumni)
-                                            <tr>  
-                                                  <td><img src="{{ url('gambar/alumni/'.$alumni->file) }}" width="40px"></td>  
-                                                  <td>{{$alumni->nama}}</td>
-                                                  <td>{{$alumni->tahun}}</td>
-                                                  <td>
-                                                    
-                                                    <a href="{{ route ('del_alumni' , $alumni->id)}}" class="btn btn-red">  <i class="fa fa-trash-o"> </i>   hapus</a>
-                                                 </td>
-                                            </tr>
-                                                @endforeach
+                                               
                                             </tbody>
                                         </table>
                                     </div>

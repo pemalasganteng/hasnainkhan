@@ -49,9 +49,9 @@
     	<div class="col-12 mt-5">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h4 class="header-title">Penambahan Jurusan</h4>
+                                        <h4 class="header-title">Penambahan Keahlian Lab</h4>
                                         
-                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">Tambah Jurusan</button>
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">Tambah Keahlian</button>
 
                                     
 
@@ -59,17 +59,17 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Tambah Jurusan</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Tambah Keahlian</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <form action="{{ route('up_jurusan') }}" method="post" enctype="multipart/form-data">
+        <form action="{{ route('up_laborat') }}" method="post" enctype="multipart/form-data">
                                     {{ csrf_field() }}
           <div class="form-group">
-            <label for="recipient-name" class="col-form-label">Nama Jurusan:</label>
-            <input type="text" name="jurusan" class="form-control" id="recipient-name">
+            <label for="recipient-name" class="col-form-label">Nama Keahlian:</label>
+            <input type="text" name="laborat" class="form-control" id="recipient-name">
           </div>
       </div>
       <div class="modal-footer">
@@ -86,15 +86,15 @@
                                         <table class="table table-striped text-center">
                                             <thead class="text-uppercase">
                                                 <tr>
-                                                    <th scope="col">Nama Jurusan</th>
+                                                    <th scope="col">Nama Keahlian</th>
                                                     <th scope="col">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach($jurusan as $jurusan)
+                                                
+                                                  @foreach($laborat as $l)
                                             <tr>  
-                                                  
-                                                  <td>{{$jurusan->jurusan}}</td>
+                                                  <td>{{$l->laborat}}</td>
                                                   <td>
                                                     <a href="#" class="btn btn-red">  <i class="fa fa-edit"> </i>   Modifikasi</a>
                                                  </td>

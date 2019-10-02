@@ -24,22 +24,27 @@
    
           <div class="col-md-6 col-lg-6">
                     <div class="post">
-                      <div class="post-thumbnail"><a href="#"><img src="{{ url('images/originals/cover/'.$album[$i]->cover) }}" height="800px " width="460px" alt="Blog-post Thumbnail"/></a></div>
+                      <div class="post-thumbnail"><a href="{{route ('gallery_foto2', $album[$i]->id)}}"><img src="{{ url('images/originals/cover/'.$album[$i]->cover) }}" height="800px " width="460px" alt="Blog-post Thumbnail"/></a></div>
                       <div class="post-header font-alt">
-                        <h2 class="post-title"><a href="/gallery/{{$album[$i]->id}}">{{$album[$i]->judul}}</a></h2>
+                        
+                        <h2 class="post-title"><a href="{{route ('gallery_foto2',$album[$i]->id)}}">{{$album[$i]->judul}}</a></h2>
                         <div class="post-meta">By&nbsp;<a href="#">Mark Stone</a>&nbsp;| 23 November | 3 Comments
                         </div>
                       </div>
                       <div class="post-entry">
-                        <p>A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy with my whole heart.</p>
+                        <p>{{$album[$i]->deskripsi}}</p>
                       </div>
-                      <div class="post-more"><a class="more-link" href="#">Read more</a></div>
+                      <div class="post-more"><a class="more-link" href="{{route ('gallery_foto2',$album[$i]->id)}}">Read more</a></div>
                     </div>
                   </div>
                   
-        @endfor
+        @endfor   
  
-          
+          Halaman : {{ $album->currentPage() }} <br/>
+  Jumlah Data : {{ $album->total() }} <br/>
+  Data Per Halaman : {{ $album->perPage() }} <br/>
+
+  {{ $album->links() }}
 
                 </div>
                 <div class="pagination font-alt"><a href="#"><i class="fa fa-angle-left"></i></a><a class="active" href="#">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><a href="#"><i class="fa fa-angle-right"></i></a></div>

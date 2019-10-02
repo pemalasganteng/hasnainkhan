@@ -19,31 +19,52 @@
 	@endsection
 
     @section('isi')
+     @if (session('sukses'))
+    <div class="alert alert-success">
+        {{ session('sukses') }}
+    </div>
+    @endif
+    @if (session('gagal'))
+    <div class="alert alert-danger">
+        {{ session('gagal') }}
+    </div>
+    @endif
+     @if (session('edit_keunggulan'))
+    <div class="alert alert-success">
+        {{ session('edit_keunggulan') }}
+    </div>
+    @endif
+    @if (session('delete'))
+    <div class="alert alert-danger">
+        {{ session('delete') }}
+    </div>
+    @endif
 
     	<div class="col-lg-12 mt-5">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="header-title">Data Alumni</h4>
+                                <h4 class="header-title">Striped Rows</h4>
                                 <div class="single-table">
                                     <div class="table-responsive">
                                         <table class="table table-striped text-center">
                                             <thead class="text-uppercase">
                                                 <tr>
-                                                    <th scope="col">Foto</th>
                                                     <th scope="col">Nama</th>
-                                                    <th scope="col">Tahun</th>
+                                                    <th scope="col">Nik</th>
+                                                    <th scope="col">Email</th>
                                                     <th scope="col">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach($alumni as $alumni)
-                                            <tr>  
-                                                  <td><img src="{{ url('gambar/alumni/'.$alumni->file) }}" width="40px"></td>  
-                                                  <td>{{$alumni->nama}}</td>
-                                                  <td>{{$alumni->tahun}}</td>
+                                                @foreach($gtk as $gtk)
+                                            <tr>
+                                                  <td>{{$gtk->nama}}</td>
+                                                  <td>{{$gtk->nik}}</td>
+                                                  <td>{{$gtk->email}}</td>
                                                   <td>
-                                                    
-                                                    <a href="{{ route ('del_alumni' , $alumni->id)}}" class="btn btn-red">  <i class="fa fa-trash-o"> </i>   hapus</a>
+
+                                                    <a href="{{ route ('data2_gtk', $gtk->id)}}" class="btn btn-green">  <i class="ti-search "> </i>preview</a>
+                                                    <a href="{{ route ('del_ketenagaan', $gtk->id)}}" class="btn btn-red">  <i class="fa fa-trash-o"> </i>   hapus</a>
                                                  </td>
                                             </tr>
                                                 @endforeach

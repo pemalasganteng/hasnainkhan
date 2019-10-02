@@ -41,8 +41,10 @@
                                        <td>{{$album[$i]->judul}}</td>
                                         <td>{{$album[$i]->deskripsi}}</td>
                                         <td>{{$album[$i]->cover}}</td>
-                                        <td><a href="/admin/gallery/{{$album[$i]->id}}" class="btn btn-green">  <i class="fa fa-edit"> </i>   edit</a>
+                                        <td>
+                                            <a href="{{ route ('edit_gallery_foto' , $album[$i]->id)}}" class="btn btn-green">  <i class="fa fa-edit"> </i>   edit</a>
                                             <a href="/admin/slider/del/" class="btn btn-red">  <i class="fa fa-trash-o"> </i>   hapus</a>
+                                            
                                         </td>
                                     </tr>
                                     @endfor

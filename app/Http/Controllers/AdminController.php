@@ -8,6 +8,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 use Intervention\Image\ImageManagerStatic as Image;
+use View;
 use App\slider;
 use App\katadepan;
 use App\keunggulan;
@@ -19,6 +20,15 @@ use App\kategori;
 use App\berita;
 use App\alumni;
 use App\jurusan;
+use App\filejurusan;
+use App\jurkeunggulan;
+use App\juralasan;
+use App\jurgallery;
+use App\statistik;
+use App\videodepan;
+use App\laborat;
+use App\gtk;
+use Auth;
 
 
 class AdminController extends Controller
@@ -26,9 +36,19 @@ class AdminController extends Controller
          protected $gallery,$album  ;
       public function __construct(gallery $gallery, album $album)
     {
+
         $this->middleware('auth');
          $this->gallery = $gallery;
         $this->album   = $album ;
+
+        $jurusan = jurusan::all();
+
+        View::share('coba', $jurusan);
+    }
+
+    public function menu(){
+
+
     }
 
 
@@ -231,6 +251,72 @@ class AdminController extends Controller
         return view('admin2/dataslide',['slider' => $slider]); 
 
     
+    }
+
+    public function statistik(){
+
+        $statistik = statistik::all();
+
+        return view('admin2/statistik',compact('statistik'));
+    }
+
+    public function up_statistik(Request $request){
+
+        $validator = Validator::make($request->all(),[
+            's_baru' => 'required',
+            's_aktif' => 'required',
+            't_pendidik' => 'required',
+            't_kependidikan' => 'required'
+            ]);
+        if ($validator->fails()) {
+            return redirect()->back()->with('gagal','gagal menambhkan !');
+        }
+        else{
+
+            $statistik = statistik::find(1);
+            $statistik->s_baru = $request->s_baru;
+            $statistik->s_aktif = $request->s_aktif;
+            $statistik->t_pendidik = $request->t_pendidik;
+            $statistik->t_kependidikan = $request->t_kependidikan;
+
+           
+
+            $statistik->save();
+
+        }
+
+
+        return redirect()->back()->with('sukses','Berhasil Menambahkan !!');
+    }
+
+    public function video(){
+
+        $video = videodepan::all();
+
+        return view('admin2/video',compact('video'));
+    }
+
+    public function up_video(Request $request){
+
+        $validator = Validator::make($request->all(),[
+            'judul' => 'required',
+            'alamat' => 'required'
+            ]);
+        if ($validator->fails()) {
+            return redirect()->back()->with('gagal','gagal menambahkan !');
+        }
+        else{
+
+            $video = videodepan::find(1);
+            $video->judul = $request->judul;
+            $video->alamat = $request->alamat;
+                    
+            $video->save();
+
+        }
+
+
+        return redirect()->back()->with('sukses','Berhasil Menambahkan !!');
     }
 
      public function slider_up(Request $request)
@@ -440,9 +526,9 @@ class AdminController extends Controller
 
     public function kepala()
     {
-       
+       $kepala =  kepala::all();
 
-        return view('admin/kepala'); 
+        return view('admin2/kepala',compact('kepala')); 
     
     }
 
@@ -772,7 +858,7 @@ class AdminController extends Controller
                 $newAlbum->judul     = $request->judul;
                 $newAlbum->deskripsi = $request->deskripsi;
                 $newAlbum->cover     = $name;
-                dd($newAlbum);
+               
                 $newAlbum   ->save  ();
                 $id = $newAlbum->id;
 
@@ -861,8 +947,32 @@ class AdminController extends Controller
 
 public function jurusan(){
 
+    $jurusan= jurusan::all();
 
-    return view('admin2/jurusan');
+    return view('admin2/jurusan',compact('jurusan'));
+}
+
+public function jurusan2($id){
+
+    $jurusan = jurusan::where('id' ,'=' ,$id)->get();
+    $p       = filejurusan::where('id_jurusan' ,'=' ,$id)->get();
+    $keunggulan  = jurkeunggulan::where('id_jurusan' ,'=' ,$id)->get();
+    $alasan     = juralasan::where('id_jurusan', '=' , $id)->get();
+    $gallery   = jurgallery::where('id_jurusan', '=' , $id)->get();
+
+
+    return view('admin2/jurusan2',compact('jurusan','p','keunggulan','alasan','gallery'));
+}
+
+public function jurusan3($id){
+
+    $jurusan = jurusan::where('id' ,'=' ,$id)->get();
+    $p       = filejurusan::where('id_jurusan' ,'=' ,$id)->get();
+    $keunggulan  = jurkeunggulan::where('id_jurusan' ,'=' ,$id)->get();
+
+    $ok = jurkeunggulan::find($id);
+
+    return view('admin2/datajurusan',compact('jurusan','p','keunggulan','ok'));
 }
 
 public function jurusan_up(Request $request){
@@ -888,4 +998,571 @@ public function jurusan_up(Request $request){
 
 }
 
+    public function jurusan_up_modal(Request $request,$id){
+
+    $validator = Validator::make($request->all(), [
+            'judul' => 'required',
+            'deskripsi' => 'required',
+            'file' => 'mimes:jpg,gif,png,jpeg'   
+            ]);
+
+    $cek = filejurusan::where('id_jurusan' ,'=' ,$id)->get('id_jurusan');
+    $k = filejurusan::where('id_jurusan' ,'=' ,$id)->get('id');
+    $ko = $k[0]->id;
+ /*   dd($ko);*/
+
+
+        
+        if ($validator->fails()) {
+            return redirect()->back()->with('gagal','gagal menambhkan !');
+        }
+
+        elseif (count($cek) == 0) {
+            
+        $uploadedFile = $request->file('file'); 
+        $name = time().'.'.$uploadedFile->getClientOriginalExtension();
+        $path = $uploadedFile->move('gambar/jurusan/modal/',$name);
+            $jurusan= new filejurusan;
+            $jurusan->id_jurusan = $request->p;
+            $jurusan->judul_top = $request->judul;
+            $jurusan->deskripsi_top = $request->deskripsi;
+            $jurusan->gambar_top = $name;
+            $jurusan->status = $request->status;
+          
+            
+        $jurusan->save();
+
+        }
+        else {
+            
+
+           $uploadedFile = $request->file('file');
+
+           if ($uploadedFile == NULL) {
+
+           $edit = filejurusan::find($ko);
+            $edit->id_jurusan = $request->p;
+            $edit->judul_top = $request->judul;
+            $edit->deskripsi_top = $request->deskripsi;
+           
+            $edit->save();      
+
+                
+           }
+           else{
+ 
+        $name = time().'.'.$uploadedFile->getClientOriginalExtension();
+        $path = $uploadedFile->move('gambar/jurusan/modal/',$name);
+            $edit2 = filejurusan::find($ko);
+            $edit2->id_jurusan = $request->p;
+            $edit2->judul_top = $request->judul;
+            $edit2->deskripsi_top = $request->deskripsi;
+            $edit2->gambar_top = $name;
+            
+           $edit2->save();
+          
+
+
+           }
+
+            return redirect()->back()->with('sukses','menambhkan jurusan!');
+        }
+
+
+    }
+
+    public function jurusan_up_keunggulan(Request $request,$id){
+
+    
+
+    $validator = Validator::make($request->all(), [
+            'icon' => 'required',
+            'judul' => 'required',
+            'isi' => 'required'   
+            ]);
+
+    $cek = jurkeunggulan::where('id_jurusan' ,'=' ,$id)->get('id_jurusan');
+    $k = jurkeunggulan::where('id_jurusan' ,'=' ,$id)->get('id');
+
+    
+
+    if ($validator->fails()) {
+            return redirect()->back()->with('gagal','gagal menambhkan !');
+        }
+    $jurusan= new jurkeunggulan;
+            $jurusan->id_jurusan = $request->p;
+            $jurusan->icon = $request->icon;
+            $jurusan->judul = $request->judul;
+            $jurusan->isi = $request->isi;
+           
+    $jurusan->save();
+
+     return redirect()->back()->with('sukses','menambhkan jurusan!');
+    }
+
+    public function jurusan_hal_keunggulan(Request $request,$id){
+
+    $jurusan = jurusan::where('id' ,'=' ,$id)->get();
+    $p       = filejurusan::where('id_jurusan' ,'=' ,$id)->get();
+    $keunggulan  = jurkeunggulan::where('id_jurusan' ,'=' ,$id)->get();
+    $ok     = jurkeunggulan::find($id);
+
+
+    return view('admin2/halunggul',compact('jurusan','p','keunggulan','ok'));
 }
+
+    public function jurusan_edit_keunggulan(Request $request,$id){
+        
+    $validator = Validator::make($request->all(), [
+            'icon' => 'required',
+            'judul' => 'required',
+            'isi' => 'required'   
+            ]);
+
+    $cek = jurkeunggulan::where('id_jurusan' ,'=' ,$id)->get('id_jurusan');
+    $k = jurkeunggulan::where('id_jurusan' ,'=' ,$id)->get('id_jurusan');
+
+    
+
+    if ($validator->fails()) {
+            return redirect()->back()->with('gagal','gagal menambhkan !');
+        }
+    else{
+    $jurusan= jurkeunggulan::find($id);
+            $jurusan->icon = $request->icon;
+            $jurusan->judul = $request->judul;
+            $jurusan->isi = $request->isi;
+           
+    $jurusan->save();
+        }
+     return redirect()->back()->with('edit_keunggulan','menambhkan jurusan!');
+    }
+    public function jurusan_del_keunggulan(Request $request,$id){
+
+
+    
+    $jurusan= jurkeunggulan::find($id);
+
+    dd($jurusan);
+            
+           
+    $jurusan->forceDelete();
+        
+     return redirect()->back()->with('delete','Telah Dihapus!');
+    }
+    
+    public function jurusan_hal_alasan(Request $request,$id){
+
+    $jurusan = jurusan::where('id' ,'=' ,$id)->get();
+    $p       = filejurusan::where('id_jurusan' ,'=' ,$id)->get();
+    $keunggulan  = jurkeunggulan::where('id_jurusan' ,'=' ,$id)->get();
+    $ok     = jurkeunggulan::find($id);
+    $alasan = juralasan::find($id);
+
+
+    return view('admin2/halalasan',compact('jurusan','p','keunggulan','ok','alasan'));
+    }
+
+    public function jurusan_up_alasan(Request $request,$id){
+
+    $validator = Validator::make($request->all(), [
+            'pertanyaan' => 'required',
+            'jawaban' => 'required'
+            ]);
+
+    $cek = jurkeunggulan::where('id_jurusan' ,'=' ,$id)->get('id_jurusan');
+    $k = jurkeunggulan::where('id_jurusan' ,'=' ,$id)->get('id');
+
+    
+
+    if ($validator->fails()) {
+            return redirect()->back()->with('gagal','gagal menambhkan !');
+        }
+        else{
+    $jurusan= new juralasan;
+            $jurusan->id_jurusan = $request->p;
+            $jurusan->pertanyaan = $request->pertanyaan;
+            $jurusan->jawaban = $request->jawaban;
+
+           
+    $jurusan->save();
+        }
+     return redirect()->back()->with('sukses','menambhkan Alasan!');
+    }
+
+    public function jurusan_edit_alasan(Request $request,$id){
+      
+    $validator = Validator::make($request->all(), [
+            'pertanyaan' => 'required',
+            'jawaban' => 'required'
+            ]);
+
+    $cek = jurkeunggulan::where('id_jurusan' ,'=' ,$id)->get('id_jurusan');
+    $k = jurkeunggulan::where('id_jurusan' ,'=' ,$id)->get('id');
+
+    
+
+    if ($validator->fails()) {
+            return redirect()->back()->with('gagal','gagal menambhkan !');
+        }
+    else{
+    $jurusan= juralasan::find($id);
+            
+            $jurusan->pertanyaan = $request->pertanyaan;
+            $jurusan->jawaban = $request->jawaban;
+            
+
+           
+    $jurusan->save();
+        }   
+     return redirect()->back()->with('sukses','Berhasil Mengedit Alasan !    ');
+    }
+     public function jurusan_del_alasan(Request $request,$id){
+
+    $jurusan= juralasan::find($id);
+    $jurusan->forceDelete();
+        
+     return redirect()->back()->with('delete','Telah Dihapus!');
+    }
+
+    
+    public function jurusan_up_gallery(Request $request){
+        $validator = Validator::make($request->all(), [
+            'file' => 'required'    
+            ]);
+        if ($validator->fails()) {
+            return redirect()->back()->with('gagal','gagal menambhkan !');
+        }
+        else{
+       
+        $uploadedFile = $request->file('file'); 
+        $name = time().'.'.$uploadedFile->getClientOriginalExtension();
+        $path = $uploadedFile->move('gambar/jurusan/gallery/',$name);
+            $jurusan = new jurgallery;
+            $jurusan->id_jurusan = $request->p;
+            $jurusan->file = $name;
+           
+        $jurusan->save();
+        }   
+       return redirect()->back()->with('sukses','menambhkan gallery!');
+
+    }
+
+    public function jurusan_del_gallery(Request $request,$id){
+
+        $hapus = jurgallery::find($id);
+        $path = public_path()."/gambar/jurusan/gallery/".$hapus->file;
+        
+        unlink($path);
+        $hapus -> forceDelete();
+        return redirect()->back()->with('sukses','Behasil menghapus gallery!');
+    }
+
+    public function ketenagaan(){
+        $laborat = laborat::all();
+        
+       
+        return view ('admin2/ketenagaan',compact('laborat'));
+    }
+
+    public function data_ketenagaan(){
+        $gtk = gtk::all();
+        $laborat = laborat::all();
+        
+       
+        return view ('admin2/data_ketenaga',compact('gtk'));
+    }
+
+     public function data_ketenagaan2($id){
+        $gtk = gtk::find($id);
+        $laborat = laborat::all();
+        if($gtk == null){
+            abort('404');
+        }
+       
+        return view ('admin2/data_ketenaga2',compact('gtk','laborat'));
+    }
+
+    public function laborat(){
+        $laborat = laborat::all();
+        return view ('admin2/laborat',compact('laborat'));  
+    }
+    public function up_laborat(Request $request){
+
+         $validator = Validator::make($request->all(), [
+            'laborat' => 'required'    
+            ]);
+        if ($validator->fails()) {
+            return redirect()->back()->with('gagal','gagal menambahkan !');
+        }
+        else{
+            $laborat = new laborat;
+            $laborat->laborat = $request->laborat;
+            $laborat->save();
+        }
+
+        return redirect()->back()->with('sukser','berhasil menambahkan !');  
+    }
+    public function up_ketenagaan(Request $request){
+
+            // nama,nik,email
+         $validator = Validator::make($request->all(), [
+            'nama' => 'required',
+            'nik' => 'required',
+            'email' => 'required'
+               
+            ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->with('gagal','gagal menambahkan !');
+        }
+
+
+
+        else{
+        $uploadedFile = $request->file('file');
+
+            if ($uploadedFile == null) {
+
+                $name = null;
+
+                $ketenagaan = new gtk;
+                    
+                $ketenagaan->no_srt_tgs = $request->no_srt_tgs;
+                $ketenagaan->tgl_srt_tgs = $request->tgl_srt_tgs;
+                $ketenagaan->tmt_tgs = $request->tmt_tgs;
+                $ketenagaan->stts_sklh = $request->s_sklh;
+
+                $ketenagaan->nama = $request->nama;
+                $ketenagaan->jns_kel = $request->j_kel;
+                $ketenagaan->nik = $request->nik;
+                $ketenagaan->tmpt_lhr = $request->tmp_lhr;
+                $ketenagaan->nama_ibu = $request->n_ibu;
+                $ketenagaan->tgl_lhr = $request->tgl_lhr;
+                $ketenagaan->file = $name;
+
+                $ketenagaan->alamat = $request->alamat;
+                $ketenagaan->rt = $request->rt;
+                $ketenagaan->rw = $request->rw;
+                $ketenagaan->dusun = $request->dusun;
+                $ketenagaan->desa = $request->desa;
+                $ketenagaan->kecamatan = $request->kecamatan;
+                $ketenagaan->kabupaten = $request->kabupaten;
+                $ketenagaan->kodepos = $request->k_pos;
+
+                $ketenagaan->agama = $request->agama;
+                $ketenagaan->s_nikah = $request->s_nikah;
+                $ketenagaan->nama_psgn = $request->n_pasangan;
+                $ketenagaan->pkrjn_psgn = $request->p_pasangan;
+                $ketenagaan->negara = $request->kewarganegaraan;
+                $ketenagaan->npwp = $request->npwp;
+
+                $ketenagaan->status = $request->s_pegawai;
+                $ketenagaan->nip = $request->nip;
+                $ketenagaan->niy = $request->niy;
+                $ketenagaan->j_gtk = $request->j_gtk;
+                $ketenagaan->sk_pengankatan = $request->sk_pengangkatan;
+                $ketenagaan->tmt_pengangkatan = $request->tmt_pengangkatan;
+                $ketenagaan->lmbg_pengangkatan = $request->l_pengangkatan;
+                $ketenagaan->sk_cpns = $request->sk_cpns;
+                $ketenagaan->tmt_pns = $request->tmt_pns;
+                $ketenagaan->golongan = $request->pangkat;
+                $ketenagaan->s_gaji = $request->s_gaji;
+
+                $ketenagaan->lisensi = $request->lisensi;
+                $ketenagaan->k_laborat = $request->k_lab;
+                $ketenagaan->keb_khusus = $request->k_khusus;
+                $ketenagaan->k_brailer = $request->k_bralle;
+                $ketenagaan->k_bahasa = $request->k_bahasa;
+
+                $ketenagaan->no_rumah = $request->no_rm;
+                $ketenagaan->no_hp = $request->no_hp;
+                $ketenagaan->email = $request->email;
+
+
+                $ketenagaan->save();
+                
+            }
+
+            else{
+
+                $name = time().'.'.$uploadedFile->getClientOriginalExtension();
+                $path = $uploadedFile->move('gambar/profil/gtk/',$name);
+
+
+                $ketenagaan = new gtk;
+                    
+                 $ketenagaan->no_srt_tgs = $request->no_srt_tgs;
+                $ketenagaan->tgl_srt_tgs = $request->tgl_srt_tgs;
+                $ketenagaan->tmt_tgs = $request->tmt_tgs;
+                $ketenagaan->stts_sklh = $request->s_sklh;
+
+                $ketenagaan->nama = $request->nama;
+                $ketenagaan->jns_kel = $request->j_kel;
+                $ketenagaan->nik = $request->nik;
+                $ketenagaan->tmpt_lhr = $request->tmp_lhr;
+                $ketenagaan->nama_ibu = $request->n_ibu;
+                $ketenagaan->tgl_lhr = $request->tgl_lhr;
+                $ketenagaan->file = $name;
+
+                $ketenagaan->alamat = $request->alamat;
+                $ketenagaan->rt = $request->rt;
+                $ketenagaan->rw = $request->rw;
+                $ketenagaan->dusun = $request->dusun;
+                $ketenagaan->desa = $request->desa;
+                $ketenagaan->kecamatan = $request->kecamatan;
+                $ketenagaan->kabupaten = $request->kabupaten;
+                $ketenagaan->kodepos = $request->k_pos;
+
+                $ketenagaan->agama = $request->agama;
+                $ketenagaan->s_nikah = $request->s_nikah;
+                $ketenagaan->nama_psgn = $request->n_pasangan;
+                $ketenagaan->pkrjn_psgn = $request->p_pasangan;
+                $ketenagaan->negara = $request->kewarganegaraan;
+                $ketenagaan->npwp = $request->npwp;
+
+                $ketenagaan->status = $request->s_pegawai;
+                $ketenagaan->nip = $request->nip;
+                $ketenagaan->niy = $request->niy;
+                $ketenagaan->j_gtk = $request->j_gtk;
+                $ketenagaan->sk_pengankatan = $request->sk_pengangkatan;
+                $ketenagaan->tmt_pengangkatan = $request->tmt_pengangkatan;
+                $ketenagaan->lmbg_pengangkatan = $request->l_pengangkatan;
+                $ketenagaan->sk_cpns = $request->sk_cpns;
+                $ketenagaan->tmt_pns = $request->tmt_pns;
+                $ketenagaan->golongan = $request->pangkat;
+                $ketenagaan->s_gaji = $request->s_gaji;
+
+                $ketenagaan->lisensi = $request->lisensi;
+                $ketenagaan->k_laborat = $request->k_lab;
+                $ketenagaan->keb_khusus = $request->k_khusus;
+                $ketenagaan->k_brailer = $request->k_bralle;
+                $ketenagaan->k_bahasa = $request->k_bahasa;
+
+                $ketenagaan->no_rumah = $request->no_rm;
+                $ketenagaan->no_hp = $request->no_hp;
+                $ketenagaan->email = $request->email;
+
+                
+                $ketenagaan->save();
+            }
+        return redirect()->back()->with('sukses','berhasil menambahkan !');
+        }
+
+    }
+
+    public function del_ketenagaan(Request $request,$id){
+
+
+    $gtk= gtk::find($id);
+
+    
+
+    if ($gtk->file == null) {
+        
+        $gtk->forceDelete();
+        
+    }
+    else{
+        $path = public_path()."/gambar/profil/gtk/".$gtk->file;
+        unlink($path);
+        $gtk->forceDelete();
+    }
+            
+           
+        
+     return redirect()->back()->with('delete','Telah Dihapus!');
+    }
+    
+    public function edit_ketenagaan(Request $request, $id){
+        
+            // nama,nik,email
+         $validator = Validator::make($request->all(), [
+            'nama' => 'required',
+            'nik' => 'required',
+            'email' => 'required'
+               
+            ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->with('gagal','gagal menambahkan !');
+        }
+
+
+
+        else{   
+                $ketenagaan = gtk::find($id);
+                $uploadedFile = $request->file('file');
+                
+
+                    
+                 $ketenagaan->no_srt_tgs = $request->no_srt_tgs;
+                $ketenagaan->tgl_srt_tgs = $request->tgl_srt_tgs;
+                $ketenagaan->tmt_tgs = $request->tmt_tgs;
+                $ketenagaan->stts_sklh = $request->s_sklh;
+
+                $ketenagaan->nama = $request->nama;
+                $ketenagaan->jns_kel = $request->j_kel;
+                $ketenagaan->nik = $request->nik;
+                $ketenagaan->tmpt_lhr = $request->tmp_lhr;
+                $ketenagaan->nama_ibu = $request->n_ibu;
+                $ketenagaan->tgl_lhr = $request->tgl_lhr;
+                if ($uploadedFile == null) {
+
+                    $ketenagaan->file = $request->file2;
+                }
+                else{
+                    $name = time().'.'.$uploadedFile->getClientOriginalExtension();
+                    $path = $uploadedFile->move('gambar/profil/gtk/',$name);
+                }
+              
+
+                $ketenagaan->alamat = $request->alamat;
+                $ketenagaan->rt = $request->rt;
+                $ketenagaan->rw = $request->rw;
+                $ketenagaan->dusun = $request->dusun;
+                $ketenagaan->desa = $request->desa;
+                $ketenagaan->kecamatan = $request->kecamatan;
+                $ketenagaan->kabupaten = $request->kabupaten;
+                $ketenagaan->kodepos = $request->k_pos;
+
+                $ketenagaan->agama = $request->agama;
+                $ketenagaan->s_nikah = $request->s_nikah;
+                $ketenagaan->nama_psgn = $request->n_pasangan;
+                $ketenagaan->pkrjn_psgn = $request->p_pasangan;
+                $ketenagaan->negara = $request->kewarganegaraan;
+                $ketenagaan->npwp = $request->npwp;
+
+                $ketenagaan->status = $request->s_pegawai;
+                $ketenagaan->nip = $request->nip;
+                $ketenagaan->niy = $request->niy;
+                $ketenagaan->j_gtk = $request->j_gtk;
+                $ketenagaan->sk_pengankatan = $request->sk_pengangkatan;
+                $ketenagaan->tmt_pengangkatan = $request->tmt_pengangkatan;
+                $ketenagaan->lmbg_pengangkatan = $request->l_pengangkatan;
+                $ketenagaan->sk_cpns = $request->sk_cpns;
+                $ketenagaan->tmt_pns = $request->tmt_pns;
+                $ketenagaan->golongan = $request->pangkat;
+                $ketenagaan->s_gaji = $request->s_gaji;
+
+                $ketenagaan->lisensi = $request->lisensi;
+                $ketenagaan->k_laborat = $request->k_lab;
+                $ketenagaan->keb_khusus = $request->k_khusus;
+                $ketenagaan->k_brailer = $request->k_bralle;
+                $ketenagaan->k_bahasa = $request->k_bahasa;
+
+                $ketenagaan->no_rumah = $request->no_rm;
+                $ketenagaan->no_hp = $request->no_hp;
+                $ketenagaan->email = $request->email;
+               
+                
+                $ketenagaan->save();
+            
+        return redirect()->back()->with('sukses','berhasil menambahkan !');
+        }
+
+    }
+
+}
+
+
